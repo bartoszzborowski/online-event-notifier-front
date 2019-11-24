@@ -1,0 +1,18 @@
+.navigation-group {
+  position: absolute !important;
+  z-index: 9999;
+
+  &.top-left {
+    top: 1rem;
+    left: 1rem;
+  }
+
+  &.top-right {
+    top: 1rem;
+    right: 1rem;
+  }
+
+  &.input-group {
+    width: auto;
+  }
+}
