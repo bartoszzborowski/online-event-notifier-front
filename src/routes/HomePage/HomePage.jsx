@@ -21,6 +21,7 @@ class HomePage extends React.Component {
         const {users, user} = this.props;
         return (
             <div className="vh-100">
+                <ModalSignIn/>
                 <div className="input-group navigation-group top-left">
                     <input type="text" className="form-control" placeholder="" aria-label=""
                            aria-describedby="basic-addon1"/>
@@ -44,7 +45,7 @@ class HomePage extends React.Component {
                         <button type="button" className="btn btn-secondary">
                             <FontAwesomeIcon icon={faUserAlt}/>
                         </button>
-                        <button type="button" className="btn btn-secondary">
+                        <button type="button" className="btn btn-secondary" onClick={() => this.handleDeleteUser()}>
                             <FontAwesomeIcon icon={faSignOutAlt}/>
                         </button>
                     </div>}
