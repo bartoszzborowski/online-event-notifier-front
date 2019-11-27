@@ -47,7 +47,8 @@ export function ModalAddEvent(props) {
                         <div className="form-group">
                             <label htmlFor="formDate">Date</label>
                             {/*TODO target is null, wtf?*/}
-                            <DatePicker className="form-control" id="formDate" value={date} onChange={e => setDate(e.target.value)}/>
+                            <DatePicker className="form-control" id="formDate" value={date}
+                                        onChange={e => setDate(e.target.value)}/>
                         </div>
 
                         <div className="form-group">
