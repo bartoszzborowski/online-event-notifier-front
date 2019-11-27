@@ -3,8 +3,8 @@ import {Redirect, Route, Router, Switch} from 'react-router-dom';
 
 import {history} from 'helpers/history';
 import {HomePage} from 'routes/HomePage';
+import {ListView} from 'routes/ListView';
 import {LoginPage} from 'routes/LoginEntryPage';
-import {PrivateRoute} from 'components/PrivateRoute';
 import {RegisterPage} from 'routes/RegisterPage';
 
 class App extends React.Component {
@@ -21,7 +21,9 @@ class App extends React.Component {
 
             <Router history={history}>
                 <Switch>
-                    <PrivateRoute exact path="/" component={HomePage}/>
+                    <Route exact path="/" component={HomePage}/>
+                    <Route exact path="/listView/:eventId" component={ListView}/>
+                    <Route exact path="/listView" component={ListView}/>
                     <Route path="/login" component={LoginPage}/>
                     <Route path="/register" component={RegisterPage}/>
                     <Redirect from="*" to="/"/>

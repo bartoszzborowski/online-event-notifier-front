@@ -17,13 +17,13 @@ export class MapContainer extends React.Component {
     }
 }
 
-const LoadingContainer = (props) => (
+const LoadingContainer = () => (
     <div>Fancy loading container!</div>
 );
 
 export default GoogleApiWrapper(
 (props) => ({
-    apiKey: 'AIzaSyB7tK3roZFjTqtvhScvg136TcJx38qtbDY',
+    apiKey: 'AIzaSyAetgoHqsaLrYb2MXog6fjcBndYw0vMbgc',
     language: props.language,
     LoadingContainer: LoadingContainer
 }))(MapContainer)

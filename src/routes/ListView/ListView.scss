@@ -1,0 +1,82 @@
+body {
+  overflow: hidden;
+}
+
+.event-list {
+  background-color: #f2f0ff;
+  padding-top: 4rem;
+  height: 100vh;
+  overflow-y: auto;
+  position: absolute;
+
+  .element {
+    background-color: #fffff7;
+    border: 1px solid black;
+    cursor: pointer;
+    padding: 0.5rem;
+    margin-bottom: 0.5rem;
+
+    &.selected {
+      border: 1px dotted #a9d300;
+    }
+  }
+}
+
+.event-details {
+  padding-top: 4rem;
+  height: 100vh;
+  overflow-y: auto;
+  position: absolute;
+
+  .label {
+    font-weight: bold;
+  }
+
+  .attendance-counter {
+    border: 1px solid lightgrey;
+    display: inline-block;
+    border-radius: 0.25rem;
+
+    div {
+      display: inline-block;
+    }
+
+    .value {
+      min-width: 4rem;
+      padding: 0 0.5rem 0 0.5rem;
+
+      span {
+        position: relative;
+        top: 0.15rem;
+      }
+    }
+
+    .attend-button {
+      padding: 0;
+    }
+  }
+
+  .map-row {
+    min-height: 50vh;
+  }
+
+  @media (max-width: 576px) {
+    padding-top: 1rem;
+  }
+}
+
+@media (max-width: 576px) {
+  body {
+    overflow: auto;
+  }
+
+  .event-list {
+    height: auto;
+    position: relative;
+  }
+
+  .event-details {
+    height: auto;
+    position: relative;
+  }
+}
