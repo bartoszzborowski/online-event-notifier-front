@@ -5,6 +5,7 @@ import {Button, Modal} from "react-bootstrap";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "./ModalAddEvent.scss"
+import {useInput} from "../../helpers/common-functions";
 
 export function ModalAddEvent(props) {
     const [show, setShow] = useState(false);
@@ -87,19 +88,3 @@ export function ModalAddEvent(props) {
         </>
     )
 }
-
-export const useInput = initialValue => {
-    const [value, setValue] = useState(initialValue);
-
-    return {
-        value,
-        setValue,
-        reset: () => setValue(""),
-        bind: {
-            value,
-            onChange: event => {
-                setValue(event.target.value);
-            }
-        }
-    };
-};
