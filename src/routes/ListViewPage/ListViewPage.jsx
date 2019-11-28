@@ -1,10 +1,10 @@
 import React from 'react';
-import './ListView.scss';
-import {Link} from "react-router-dom";
+import './ListViewPage.scss';
 import MapContainer from "../../components/MapContainer/MapContainer";
 import {TopNavigation} from "../../components/TopNavigation";
+import {EventListItem} from "../../components/EventListItem";
 
-export class ListView extends React.Component {
+export class ListViewPage extends React.Component {
     constructor(props) {
         super(props);
         console.log(props);
@@ -73,24 +73,7 @@ export class ListView extends React.Component {
                     <div className="row">
                         <div className="col-sm-4 event-list">
                             {this.state.listItems.map((item, index) => {
-                                return <div
-                                    className={"element " + (this.state.selectedItemId === item.id ? 'selected' : '')}
-                                    key={index}>
-                                    <div className={"form-row"}>
-                                        <div className={"col"}>
-                                            {item.name}
-                                        </div>
-                                        <div className={"col-auto"}>
-                                            <Link to={"/listView/" + item.id} className={"event-link"}>CHECK</Link>
-                                        </div>
-                                    </div>
-                                    <div className={'date-and-location'}>
-                                        {new Date(item.date).toDateString()} {item.location}
-                                    </div>
-                                    <div className={"description"}>
-                                        {item.description}
-                                    </div>
-                                </div>
+                                return <EventListItem item={item} selected={this.state.selectedItemId === item.id} key={index}/>
                             })}
 
                         </div>

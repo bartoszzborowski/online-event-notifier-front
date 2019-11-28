@@ -21,7 +21,7 @@ export class TopNavigation extends React.Component {
                         <button className="btn btn-secondary" type="button">
                             <FontAwesomeIcon icon={faFilter}/>
                         </button>
-                        <Link to={this.props.isListView ? '' : '/listView'}
+                        <Link to={this.props.isListView ? '' : '../listView'}
                               className={"btn btn-secondary rounded-right " + (this.props.isListView ? 'active' : '')}>
                             <FontAwesomeIcon icon={faList}/>
                         </Link>
@@ -30,10 +30,10 @@ export class TopNavigation extends React.Component {
                 <div className="navigation-group top-right">
                     {user && <div className="btn-group">
                         <ModalAddEvent/>
-                        <button type="button" className="btn btn-secondary">
+                        <Link to="../profile" className="btn btn-secondary rounded-right">
                             <FontAwesomeIcon icon={faUserAlt}/>
-                        </button>
-                        <Link to="/login" className="btn btn-secondary rounded-right">
+                        </Link>
+                        <Link to="../login" className="btn btn-secondary rounded-right">
                             <FontAwesomeIcon icon={faSignOutAlt}/>
                         </Link>
                     </div>}

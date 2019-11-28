@@ -61,7 +61,7 @@ export function ModalSignIn() {
                                            placeholder="Enter password"/>
                                     <ErrorMessage name="password" component="div" className={"invalid-feedback"}/>
                                 </div>
-                                <Link to={'register'}>Doesn't have an account? Register here!</Link>
+                                <Link to={'../register'}>Doesn't have an account? Register here!</Link>
                             </Modal.Body>
                             <Modal.Footer>
                                 <Button variant="secondary" onClick={handleClose}>
