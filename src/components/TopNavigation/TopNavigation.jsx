@@ -8,8 +8,7 @@ import './TopNavigation.scss';
 
 export class TopNavigation extends React.Component {
     render() {
-        const {users, user} = this.props;
-        console.log(this.props);
+        const {user} = this.props;
         return (
             <>
                 <div className="input-group navigation-group top-left">

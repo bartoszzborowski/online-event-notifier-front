@@ -5,26 +5,13 @@ import {Button, Modal} from "react-bootstrap";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "./ModalAddEvent.scss"
-import {useInput} from "../../helpers/common-functions";
+import {ErrorMessage, Field, Formik} from 'formik';
 
-export function ModalAddEvent(props) {
+export function ModalAddEvent() {
     const [show, setShow] = useState(false);
-    const {value: name, bind: bindName, reset: resetName} = useInput('');
-    const {value: location, bind: bindLocation, reset: resetLocation} = useInput('');
-    const {value: type, bind: bindType, reset: resetType} = useInput('');
-    const {value: description, bind: bindDescription, reset: resetDescription} = useInput('');
-    const {value: entryFee, bind: bindEntryFee, reset: resetEntryFee} = useInput('');
 
-    const [date, setDate] = useState('');
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
-
-    const handleSubmit = (event) => {
-        console.log('submit');
-        event.preventDefault();
-        alert(`Submitting Name ${name}`);
-        resetName();
-    };
 
     return (
         <>
@@ -33,58 +20,112 @@ export function ModalAddEvent(props) {
             </button>
 
             <Modal show={show} onHide={handleClose}>
-                <form onSubmit={handleSubmit}>
-                    <Modal.Header closeButton>
-                        <Modal.Title>Adding new event</Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body>
-                        <div className="form-group">
-                            <label htmlFor="formName">Name</label>
-                            <input className="form-control" type="text" placeholder="Enter event name" {...bindName}
-                                   id="formName"/>
-                        </div>
+                <Formik
+                    initialValues={{name: '', date: '', location: '', type: '', description: '', entryFee: ''}}
+                    validate={values => {
+                        const errors = {};
+                        if (!values.name) {
+                            errors.name = 'Name is either empty or invalid';
+                        }
+                        if (!values.date) {
+                            errors.date = 'Date is either empty or invalid';
+                        }
+                        if (!values.location) {
+                            errors.location = 'Location is either empty or invalid';
+                        }
+                        if (!values.type) {
+                            errors.type = 'Type is either empty or invalid';
+                        }
+                        if (!values.description) {
+                            errors.description = 'Description is either empty or invalid';
+                        }
+                        if (!values.entryFee) {
+                            errors.entryFee = 'Entry fee is either empty or invalid';
+                        }
+                        return errors;
+                    }}
+                    onSubmit={(values, {setSubmitting}) => {
+                        setTimeout(() => {
+                            alert(JSON.stringify(values, null, 2));
+                            setSubmitting(false);
+                        }, 400);
+                    }}
+                >
+                    {({
+                          values,
+                          errors,
+                          setFieldValue,
+                          handleSubmit,
+                          isSubmitting,
+                      }) => (
+                        <form onSubmit={handleSubmit}>
+                            <Modal.Header closeButton>
+                                <Modal.Title>Adding new event</Modal.Title>
+                            </Modal.Header>
+                            <Modal.Body>
+                                <div className="form-group">
+                                    <label htmlFor="formName">Name</label>
+                                    <Field type="text" name="name" id={"formName"}
+                                           className={"form-control " + (errors.name ? 'is-invalid' : '')}/>
+                                    <ErrorMessage name="name" component="div" className={"invalid-feedback"}/>
+                                </div>
 
-                        <div className="form-group">
-                            <label htmlFor="formDate">Date</label>
-                            {/*TODO target is null, wtf?*/}
-                            <DatePicker className="form-control" id="formDate" value={date}
-                                        onChange={e => setDate(e.target.value)}/>
-                        </div>
+                                <div className="form-group">
+                                    <label htmlFor="formDate">Date</label>
+                                    <DatePicker type="date" name="date"
+                                                className={"form-control " + (errors.date ? 'is-invalid' : '')}
+                                                selected={values.date}
+                                                id={"formDate"}
+                                                onChange={(date) => {
+                                                    setFieldValue('date', date);
+                                                }}
+                                                value={values.date}/>
+                                    <ErrorMessage name="date" component="div" className={"invalid-feedback"}/>
+                                </div>
 
-                        <div className="form-group">
-                            <label htmlFor="formLocation">Location</label>
-                            <input className="form-control" type="text" placeholder="Enter location" {...bindLocation}
-                                   id="formLocation"/>
-                        </div>
+                                <div className="form-group">
+                                    <label htmlFor="formLocation">Location</label>
+                                    <Field type="text" name="location"
+                                           className={"form-control " + (errors.location ? 'is-invalid' : '')}
+                                           id={"formLocation"}/>
+                                    <ErrorMessage name="location" component="div" className={"invalid-feedback"}/>
+                                </div>
 
-                        <div className="form-group">
-                            <label htmlFor="formType">Type</label>
-                            <input className="form-control" type="text" placeholder="Enter type" {...bindType}
-                                   id="formType"/>
-                        </div>
+                                <div className="form-group">
+                                    <label htmlFor="formType">Type</label>
+                                    <Field type="text" name="type"
+                                           className={"form-control " + (errors.type ? 'is-invalid' : '')}
+                                           id={"formType"}/>
+                                    <ErrorMessage name="type" component="div" className={"invalid-feedback"}/>
+                                </div>
 
-                        <div className="form-group">
-                            <label htmlFor="formDescription">Description</label>
-                            <textarea className="form-control" type="text"
-                                      placeholder="Enter description" {...bindDescription}
-                                      id="formDescription"/>
-                        </div>
+                                <div className="form-group">
+                                    <label htmlFor="formDescription">Description</label>
+                                    <Field type="text" name="description"
+                                           className={"form-control " + (errors.description ? 'is-invalid' : '')}
+                                           id={"formDescription"}/>
+                                    <ErrorMessage name="description" component="div" className={"invalid-feedback"}/>
+                                </div>
 
-                        <div className="form-group">
-                            <label htmlFor="formEntryFee">Type</label>
-                            <input className="form-control" type="text" placeholder="Enter entry fee" {...bindEntryFee}
-                                   id="formEntryFee"/>
-                        </div>
-                    </Modal.Body>
-                    <Modal.Footer>
-                        <Button variant="secondary" onClick={handleClose}>
-                            Cancel
-                        </Button>
-                        <button type="submit" className="btn btn-primary">
-                            Add
-                        </button>
-                    </Modal.Footer>
-                </form>
+                                <div className="form-group">
+                                    <label htmlFor="formEntryFee">Type</label>
+                                    <Field type="text" name="entryFee"
+                                           className={"form-control " + (errors.entryFee ? 'is-invalid' : '')}
+                                           id={"formEntryFee"}/>
+                                    <ErrorMessage name="entryFee" component="div" className={"invalid-feedback"}/>
+                                </div>
+                            </Modal.Body>
+                            <Modal.Footer>
+                                <Button variant="secondary" onClick={handleClose}>
+                                    Cancel
+                                </Button>
+                                <button type="submit" className="btn btn-primary" disabled={isSubmitting}>
+                                    Add
+                                </button>
+                            </Modal.Footer>
+                        </form>
+                    )}
+                </Formik>
             </Modal>
         </>
     )

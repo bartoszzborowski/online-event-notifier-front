@@ -24,7 +24,6 @@ class App extends React.Component {
                     <Route exact path="/" component={HomePage}/>
                     <Route exact path="/listView/:eventId" component={ListView}/>
                     <Route exact path="/listView" component={ListView}/>
-                    <Route path="/login" component={LoginPage}/>
                     <Route path="/register" component={RegisterPage}/>
                     <Redirect from="*" to="/"/>
                 </Switch>
