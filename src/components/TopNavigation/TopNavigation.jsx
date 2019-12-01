@@ -3,8 +3,8 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faFilter, faList, faSearch, faSignOutAlt, faUserAlt} from "@fortawesome/free-solid-svg-icons";
 import {Link} from "react-router-dom";
 import {ModalAddEvent} from "../ModalAddEvent";
-import {ModalSignIn} from "../ModalSignIn";
 import './TopNavigation.scss';
+import ModalSignIn from "../ModalSignIn/ModalSignIn";
 
 export class TopNavigation extends React.Component {
     render() {

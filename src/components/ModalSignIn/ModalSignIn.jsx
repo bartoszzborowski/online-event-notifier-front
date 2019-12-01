@@ -2,13 +2,15 @@ import React, {useState} from "react";
 import {Button, Modal} from "react-bootstrap";
 import {ErrorMessage, Field, Formik} from 'formik';
 import {Link} from "react-router-dom";
+import {connect} from "react-redux";
+import { userActions } from 'stores/actions';
 
-export function ModalSignIn() {
+const ModalSignIn = (props) => {
     const [show, setShow] = useState(false);
 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
-
+    const {login: LoginUser, error} = props;
     return (
         <>
             <button type="button" className="btn btn-secondary" onClick={handleShow}>
@@ -32,10 +34,12 @@ export function ModalSignIn() {
                         return errors;
                     }}
                     onSubmit={(values, {setSubmitting}) => {
-                        setTimeout(() => {
-                            alert(JSON.stringify(values, null, 2));
-                            setSubmitting(false);
-                        }, 400);
+                        LoginUser(values.email, values.password);
+                        setSubmitting(false);
+                        // setTimeout(() => {
+                        //     alert(JSON.stringify(values, null, 2));
+                        //     setSubmitting(false);
+                        // }, 400);
                     }}
                 >
                     {({
@@ -62,6 +66,7 @@ export function ModalSignIn() {
                                     <ErrorMessage name="password" component="div" className={"invalid-feedback"}/>
                                 </div>
                                 <Link to={'../register'}>Doesn't have an account? Register here!</Link>
+                                {error && error}
                             </Modal.Body>
                             <Modal.Footer>
                                 <Button variant="secondary" onClick={handleClose}>
@@ -77,4 +82,16 @@ export function ModalSignIn() {
             </Modal>
         </>
     )
+};
+
+
+function mapState(state) {
+    const { loggingIn = false, error } = state.authentication || {};
+    return { loggingIn, error };
 }
+
+const actionCreators = {
+    login: userActions.login,
+};
+
+export default connect(mapState, actionCreators)(ModalSignIn)

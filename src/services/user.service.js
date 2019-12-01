@@ -14,7 +14,7 @@ export const userService = {
 function login(username, password) {
     const MUTATION = gql`
         mutation($email: String, $password: String) {
-          userLogin(
+          login(
             input: { email: $email, password: $password }
           ) {
             id

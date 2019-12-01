@@ -1,7 +1,7 @@
 import { userConstants } from 'stores/constants';
 
 let user = JSON.parse(localStorage.getItem('user'));
-const initialState = user ? { loggedIn: true, user } : {};
+const initialState = user ? { loggedIn: true, user, error: null} : {error: null};
 
 export function authentication(state = initialState, action) {
     switch (action.type) {
@@ -16,7 +16,10 @@ export function authentication(state = initialState, action) {
                 user: action.user
             };
         case userConstants.LOGIN_FAILURE:
-            return {};
+            console.log('action', action);
+            return {
+                error: action.error
+            };
         case userConstants.LOGOUT:
             return {};
         default:
