@@ -45,6 +45,7 @@ const ModalSignIn = (props) => {
                     {({
                           errors,
                           handleSubmit,
+                          isSubmitting
                       }) => (
                         <form onSubmit={handleSubmit}>
                             <Modal.Header closeButton>
@@ -66,13 +67,13 @@ const ModalSignIn = (props) => {
                                     <ErrorMessage name="password" component="div" className={"invalid-feedback"}/>
                                 </div>
                                 <Link to={'../register'}>Doesn't have an account? Register here!</Link>
-                                {error && error}
+                                <div className={"text-danger mt-2"}>{error && error}</div>
                             </Modal.Body>
                             <Modal.Footer>
                                 <Button variant="secondary" onClick={handleClose}>
                                     Cancel
                                 </Button>
-                                <button className={"btn btn-primary"} type={"submit"}>
+                                <button className={"btn btn-primary"} type={"submit"} disabled={isSubmitting}>
                                     Sign in
                                 </button>
                             </Modal.Footer>

@@ -11,3 +11,12 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
+
+.icon-default {
+  color: #004A94;
+  margin-right: 0.2rem;
+}
+
+.icon-default:not(.disabled) {
+  cursor: pointer;
+}

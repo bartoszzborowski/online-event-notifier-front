@@ -16,6 +16,14 @@ body {
   overflow-y: auto;
   position: absolute;
 
+  .options {
+    padding: 0.3rem;
+    background-color: #f4f4f4;
+    border: 1px solid #a29393;
+    border-radius: 0.2rem;
+    margin-bottom: 0.75rem;
+  }
+
   .label {
     font-weight: bold;
   }

@@ -1,0 +1,57 @@
+$tile_width: 8rem;
+$tile_height: 8rem;
+
+
+.tile {
+    margin-bottom: 0.5rem;
+    cursor: pointer;
+    color: black;
+
+    &:hover {
+        .header {
+            background-color: #004A94;
+            color: #eaf1f8;
+        }
+        .icon {
+            background-color: #004A94;
+            color: #eaf1f8;
+        }
+    }
+
+
+    .content {
+        text-align: center;
+        background-color: #eaf1f8;
+        width: $tile_width;
+        height: $tile_height;
+
+        .spinner {
+            width: $tile_width;
+            height: $tile_height;
+            position: absolute;
+        }
+
+        .icon {
+            height: 68%;
+
+            svg {
+                height: 50%;
+                width: 50%;
+                margin-top: 22%;
+            }
+        }
+
+        div.header {
+            display: flex;
+            align-items: flex-end;
+            height: 32%;
+            padding: 0 0.5rem 0.2rem 0.5rem;
+            overflow: hidden;
+            text-align: center;
+
+            span {
+                width: 100%;
+            }
+        }
+    }
+}

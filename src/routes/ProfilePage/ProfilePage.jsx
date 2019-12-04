@@ -15,7 +15,7 @@ export class ProfilePage extends React.Component {
                     description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut sem elit, pretium ut imperdiet vel, semper vestibulum quam. Phasellus rhoncus dolor libero, non sollicitudin elit feugiat id. Aliquam orci metus, bibendum et dui in, porttitor convallis velit.',
                     date: '2019-11-27T16:44:16+0000',
                     location: '???',
-                    attendanceFee: 13.33
+                    entryFee: 13.33
                 },
                 {
                     id: 2,
@@ -23,7 +23,7 @@ export class ProfilePage extends React.Component {
                     description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut sem elit, pretium ut imperdiet vel, semper vestibulum quam. Phasellus rhoncus dolor libero, non sollicitudin elit feugiat id. Aliquam orci metus, bibendum et dui in, porttitor convallis velit.',
                     date: '2019-11-27T16:44:16+0000',
                     location: '???',
-                    attendanceFee: 28.99
+                    entryFee: 28.99
                 },
                 {
                     id: 3,
@@ -31,7 +31,7 @@ export class ProfilePage extends React.Component {
                     description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut sem elit, pretium ut imperdiet vel, semper vestibulum quam. Phasellus rhoncus dolor libero, non sollicitudin elit feugiat id. Aliquam orci metus, bibendum et dui in, porttitor convallis velit.',
                     date: '2019-11-27T16:44:16+0000',
                     location: '???',
-                    attendanceFee: 30
+                    entryFee: 30
                 },
                 {
                     id: 4,
@@ -39,7 +39,7 @@ export class ProfilePage extends React.Component {
                     description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut sem elit, pretium ut imperdiet vel, semper vestibulum quam. Phasellus rhoncus dolor libero, non sollicitudin elit feugiat id. Aliquam orci metus, bibendum et dui in, porttitor convallis velit.',
                     date: '2019-11-27T16:44:16+0000',
                     location: '???',
-                    attendanceFee: 128
+                    entryFee: 128
                 }
             ],
             userEvents: [
@@ -49,7 +49,7 @@ export class ProfilePage extends React.Component {
                     description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut sem elit, pretium ut imperdiet vel, semper vestibulum quam. Phasellus rhoncus dolor libero, non sollicitudin elit feugiat id. Aliquam orci metus, bibendum et dui in, porttitor convallis velit.',
                     date: '2019-11-27T16:44:16+0000',
                     location: '???',
-                    attendanceFee: 13.33
+                    entryFee: 13.33
                 },
                 {
                     id: 2,
@@ -57,7 +57,7 @@ export class ProfilePage extends React.Component {
                     description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut sem elit, pretium ut imperdiet vel, semper vestibulum quam. Phasellus rhoncus dolor libero, non sollicitudin elit feugiat id. Aliquam orci metus, bibendum et dui in, porttitor convallis velit.',
                     date: '2019-11-27T16:44:16+0000',
                     location: '???',
-                    attendanceFee: 28.99
+                    entryFee: 28.99
                 },
                 {
                     id: 3,
@@ -65,7 +65,7 @@ export class ProfilePage extends React.Component {
                     description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut sem elit, pretium ut imperdiet vel, semper vestibulum quam. Phasellus rhoncus dolor libero, non sollicitudin elit feugiat id. Aliquam orci metus, bibendum et dui in, porttitor convallis velit.',
                     date: '2019-11-27T16:44:16+0000',
                     location: '???',
-                    attendanceFee: 30
+                    entryFee: 30
                 },
                 {
                     id: 4,
@@ -73,7 +73,7 @@ export class ProfilePage extends React.Component {
                     description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut sem elit, pretium ut imperdiet vel, semper vestibulum quam. Phasellus rhoncus dolor libero, non sollicitudin elit feugiat id. Aliquam orci metus, bibendum et dui in, porttitor convallis velit.',
                     date: '2019-11-27T16:44:16+0000',
                     location: '???',
-                    attendanceFee: 128
+                    entryFee: 128
                 }
             ],
         }
