@@ -9,6 +9,7 @@ import {AdminPage} from "./routes/AdminPage";
 import {AdminEventsPage} from "./routes/AdminEventsPage";
 import {AdminUsersPage} from "./routes/AdminUsersPage";
 import {AdminUserPage} from "./routes/AdminUserPage/AdminUserPage";
+import {PrivateRoute} from "./components/PrivateRoute";
 
 class App extends React.Component {
     constructor(props) {
@@ -28,10 +29,10 @@ class App extends React.Component {
                     <Route exact path="/listView/:eventId" component={ListViewPage}/>
                     <Route exact path="/listView" component={ListViewPage}/>
                     <Route exact path="/profile" component={ProfilePage}/>
-                    <Route exact path="/admin" component={AdminPage}/>
-                    <Route exact path="/admin/events" component={AdminEventsPage}/>
-                    <Route exact path="/admin/users" component={AdminUsersPage}/>
-                    <Route exact path="/admin/user/:userId" component={AdminUserPage}/>
+                    <PrivateRoute roles={'admin'} exact path="/admin" component={AdminPage}/>
+                    <PrivateRoute exact path="/admin/events" component={AdminEventsPage}/>
+                    <PrivateRoute exact path="/admin/users" component={AdminUsersPage}/>
+                    <PrivateRoute exact path="/admin/user/:userId" component={AdminUserPage}/>
                     <Route path="/register" component={RegisterPage}/>
                     <Redirect from="*" to="/"/>
                 </Switch>

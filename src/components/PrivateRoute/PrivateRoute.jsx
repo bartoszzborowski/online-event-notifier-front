@@ -3,12 +3,13 @@ import { Route, Redirect } from 'react-router-dom';
 
 export const PrivateRoute = ({ component: Component, roles, ...rest }) => (
     <Route {...rest} render={props => {
-        const currentUser = localStorage.getItem('user');
+        const currentUser = JSON.parse(localStorage.getItem('user'));
+        const {admin: isAdmin} = currentUser;
+
         if (!currentUser) {
             return <Redirect to={{ pathname: '/login', state: { from: props.location } }} />
         }
-
-        if (roles && roles.indexOf(currentUser.role) === -1) {
+        if (roles && !isAdmin) {
             return <Redirect to={{ pathname: '/'}} />
         }
 

@@ -20,16 +20,17 @@ function login(username, password) {
             id
             email
             token
+            admin
           }
         }
     `;
     return client
         .mutate({mutation: MUTATION, variables: {email: username, password: password}})
         .then(result => {
-            const {data: {userLogin = {}}} = result;
+            const {data: {login = {}}} = result;
             // store user details and jwt token in local storage to keep user logged in between page refreshes
-            localStorage.setItem('user', JSON.stringify(userLogin));
-            return userLogin;
+            localStorage.setItem('user', JSON.stringify(login));
+            return login;
         });
 }
 
