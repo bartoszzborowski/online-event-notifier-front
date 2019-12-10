@@ -27,7 +27,6 @@ class TopNavigation extends React.Component {
 
   render() {
     const { user, logout } = this.props;
-    console.log("user", user);
     return (
       <>
         <Formik

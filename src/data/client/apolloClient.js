@@ -29,7 +29,6 @@ export const client = new ApolloClient(config);
 export const getClient = token => {
   const authLink = setContext((_, { headers }) => {
     const authTokenFromCookie = JSON.parse(localStorage.getItem("user")).token;
-    console.log("token", token);
     const authToken = token || authTokenFromCookie || "";
     return {
       headers: {

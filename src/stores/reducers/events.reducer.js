@@ -1,4 +1,4 @@
-import { eventConstants, userConstants } from "stores/constants";
+import { eventConstants } from "stores/constants";
 
 export function events(
   state = { loading: false, error: null, events: null, event: null },
@@ -13,6 +13,8 @@ export function events(
       };
     case eventConstants.EVENT_GET_SUCCESS:
       return {
+        ...state,
+        loading: false,
         events: action.events
       };
     case eventConstants.EVENT_CREATE_SUCCESS:

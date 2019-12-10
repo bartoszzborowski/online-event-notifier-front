@@ -59,7 +59,7 @@ function updateEvent(event) {
 
 function getEvents() {
   return dispatch => {
-    dispatch(request);
+    dispatch(request());
 
     eventService.getByUser().then(
       events => dispatch(success(events)),

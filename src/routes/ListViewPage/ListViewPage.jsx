@@ -66,6 +66,7 @@ class ListViewPage extends React.PureComponent {
       locations,
       eventTypes,
       updateEvent,
+      loading,
       match: {
         params: { eventId }
       }
@@ -109,6 +110,7 @@ class ListViewPage extends React.PureComponent {
         <div className="container-fluid">
           <div className="row">
             <div className="col-sm-4 event-list">
+              {loading && <div>Loading events....</div>}
               {events &&
                 events.map((item, index) => {
                   return (
@@ -406,9 +408,9 @@ class ListViewPage extends React.PureComponent {
 }
 
 const mapStateToProps = state => {
-  const { events, event } = state.events;
+  const { events, event, loading } = state.events;
   const { locations, eventTypes } = state.ui;
-  return { events, locations, eventTypes, event };
+  return { events, locations, eventTypes, event, loading };
 };
 
 const actionCreators = {

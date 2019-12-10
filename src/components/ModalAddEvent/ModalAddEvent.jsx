@@ -82,8 +82,6 @@ const ModalAddEvent = props => {
             if (!values.entryFee) {
               errors.entryFee = "Entry fee is either empty or invalid";
             }
-            console.log("errors", errors);
-            console.log("values", values);
             return errors;
           }}
           onSubmit={(values, { setSubmitting }) => {
@@ -182,6 +180,7 @@ const ModalAddEvent = props => {
                         "form-control " + (errors.type ? "is-invalid" : "")
                       }
                       component={SelectField}
+                      disabled={true}
                       options={typesOptions}
                       field={{ name: "type", value: values.type }}
                     />

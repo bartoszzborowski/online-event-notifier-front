@@ -8,7 +8,6 @@ import { connect } from "react-redux";
 
 const ModalDeleteEvent = props => {
   const [show, setShow] = useState(false);
-  console.log("props", props);
   const { deleteEvent } = props;
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
