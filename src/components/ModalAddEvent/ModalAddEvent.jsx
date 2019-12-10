@@ -153,42 +153,45 @@ const ModalAddEvent = props => {
                     className={"invalid-feedback"}
                   />
                 </div>
-                <div className="form-group">
-                  <label htmlFor="formLocation">Location</label>
-                  <Field
-                    name="city_id"
-                    component={SelectField}
-                    options={locationsOptions}
-                    field={{ name: "city_id", value: values.city_id }}
-                    className={
-                      "form-control " + (errors.city_id ? "is-invalid" : "")
-                    }
-                  />
-                  <ErrorMessage
-                    name="city_id"
-                    component="div"
-                    className={"invalid-feedback"}
-                  />
-                </div>
+                {locations && (
+                  <div className="form-group">
+                    <label htmlFor="formLocation">Location</label>
+                    <Field
+                      name="city_id"
+                      component={SelectField}
+                      options={locationsOptions}
+                      field={{ name: "city_id", value: values.city_id }}
+                      className={
+                        "form-control " + (errors.city_id ? "is-invalid" : "")
+                      }
+                    />
+                    <ErrorMessage
+                      name="city_id"
+                      component="div"
+                      className={"invalid-feedback"}
+                    />
+                  </div>
+                )}
 
-                <div className="form-group">
-                  <label htmlFor="formType">Type</label>
-                  <Field
-                    name="type"
-                    className={
-                      "form-control " + (errors.type ? "is-invalid" : "")
-                    }
-                    component={SelectField}
-                    options={typesOptions}
-                    field={{ name: "type", value: values.type }}
-                  />
-                  <ErrorMessage
-                    name="type"
-                    component="div"
-                    className={"invalid-feedback"}
-                  />
-                </div>
-
+                {eventTypes && (
+                  <div className="form-group">
+                    <label htmlFor="formType">Type</label>
+                    <Field
+                      name="type"
+                      className={
+                        "form-control " + (errors.type ? "is-invalid" : "")
+                      }
+                      component={SelectField}
+                      options={typesOptions}
+                      field={{ name: "type", value: values.type }}
+                    />
+                    <ErrorMessage
+                      name="type"
+                      component="div"
+                      className={"invalid-feedback"}
+                    />
+                  </div>
+                )}
                 <div className="form-group">
                   <label htmlFor="formDescription">Description</label>
                   <Field
