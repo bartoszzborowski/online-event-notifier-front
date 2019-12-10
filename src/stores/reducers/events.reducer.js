@@ -19,7 +19,7 @@ export function events(
       };
     case eventConstants.EVENT_CREATE_SUCCESS:
       return {
-        event: action.event
+        event: action.events
       };
     case eventConstants.EVENT_UPDATE_SUCCESS:
       return {
