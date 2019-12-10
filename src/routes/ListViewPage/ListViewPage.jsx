@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+import React from "react";
 import "./ListViewPage.scss";
 import MapContainer from "../../components/MapContainer/MapContainer";
 import { TopNavigation } from "../../components/TopNavigation/TopNavigation";
 import { EventListItem } from "../../components/EventListItem/EventListItem";
 import DatePicker from "react-datepicker";
 import { ErrorMessage, Field, Formik } from "formik";
-import { ModalDeleteEvent } from "../../components/ModalDeleteEvent/ModalDeleteEvent";
+import ModalDeleteEvent from "../../components/ModalDeleteEvent/ModalDeleteEvent";
 import { eventActions } from "stores/actions";
 import { uiActions } from "stores/actions";
 import { connect } from "react-redux";
@@ -30,6 +30,7 @@ class ListViewPage extends React.PureComponent {
     };
     this.editEvent = this.editEvent.bind(this);
     this.cancelEditEvent = this.cancelEditEvent.bind(this);
+    this.toggleToast = this.toggleToast.bind(this);
   }
 
   componentDidMount() {
@@ -49,6 +50,12 @@ class ListViewPage extends React.PureComponent {
   cancelEditEvent() {
     this.editing = false;
     this.forceUpdate();
+  }
+
+  toggleToast() {
+    this.setState(state => {
+      return { showToast: !state.showToast };
+    });
   }
 
   render() {
@@ -75,19 +82,16 @@ class ListViewPage extends React.PureComponent {
         return { value: item.name, label: item.name };
       });
     const item = events ? events.find(x => x.id === parseInt(eventId)) : null;
-
-    event && this.setState({ showToast: true });
-
     return (
       <div className="vh-100">
         <Toast
           style={{
             position: "absolute",
             top: 0,
-            right: "20px",
+            right: "45vw",
             zIndex: 9999
           }}
-          onClose={() => this.setState({ showToast: false })}
+          onClose={() => this.toggleToast()}
           show={showToast}
           delay={3000}
           autohide
@@ -185,6 +189,7 @@ class ListViewPage extends React.PureComponent {
                 <>
                   <Formik
                     initialValues={{
+                      id: item.id || "",
                       name: item.name || "",
                       event_date: item.event_date || "",
                       city_id: item.city_id || "",
@@ -198,11 +203,11 @@ class ListViewPage extends React.PureComponent {
                       if (!values.name) {
                         errors.name = "Name is either empty or invalid";
                       }
-                      if (!values.date) {
+                      if (!values.event_date) {
                         errors.date = "Date is either empty or invalid";
                       }
-                      if (!values.address) {
-                        errors.location = "Address is either empty or invalid";
+                      if (!values.city_id) {
+                        errors.city_id = "Address is either empty or invalid";
                       }
                       if (!values.description) {
                         errors.description =
@@ -216,7 +221,11 @@ class ListViewPage extends React.PureComponent {
                     }}
                     onSubmit={(values, { setSubmitting }) => {
                       updateEvent(values);
+                      this.toggleToast();
                       setSubmitting(false);
+                      setTimeout(() => {
+                        window.location.reload();
+                      }, 2000);
                     }}
                   >
                     {({
@@ -294,17 +303,17 @@ class ListViewPage extends React.PureComponent {
                         <div className="form-group">
                           <label htmlFor="formLocation">Location</label>
                           <Field
-                            name="location"
+                            name="city_id"
                             component={SelectField}
                             options={locationsOptions}
-                            field={values.city_id}
+                            field={{ value: values.city_id }}
                             className={
                               "form-control " +
-                              (errors.location ? "is-invalid" : "")
+                              (errors.city_id ? "is-invalid" : "")
                             }
                           />
                           <ErrorMessage
-                            name="location"
+                            name="city_id"
                             component="div"
                             className={"invalid-feedback"}
                           />
@@ -320,7 +329,7 @@ class ListViewPage extends React.PureComponent {
                             }
                             component={SelectField}
                             options={typesOptions}
-                            field={{ value: "dupa" }}
+                            field={{ value: values.type }}
                           />
                           <ErrorMessage
                             name="type"

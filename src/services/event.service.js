@@ -25,10 +25,18 @@ function getAll() {
 }
 
 function create(event) {
-  const { name, event_date, location, type, description, entryFee } = event;
+  const {
+    name,
+    event_date,
+    address,
+    city_id,
+    type,
+    description,
+    entryFee
+  } = event;
   const enhanceEvent = {
-    address: location,
-    city_id: location,
+    address: address,
+    city_id: city_id,
     description,
     event_date,
     event_type: type,
@@ -110,11 +118,20 @@ function getByUser() {
 }
 
 function update(event) {
-  const { id, name, event_date, location, type, description, entryFee } = event;
+  const {
+    id,
+    name,
+    event_date,
+    address,
+    city_id,
+    type,
+    description,
+    entryFee
+  } = event;
   const enhanceEvent = {
     id,
-    address: location,
-    city_id: location,
+    address: address,
+    city_id: city_id,
     description,
     event_date,
     event_type: type,
@@ -149,7 +166,19 @@ function update(event) {
     });
 }
 
-// prefixed function name with underscore because delete is a reserved word in javascript
 function _delete(id) {
-  return null;
+  const MUTATION = gql`
+    mutation($event_id: Int) {
+      deleteEvents(event_id: $event_id)
+    }
+  `;
+
+  return getClient()
+    .mutate({ mutation: MUTATION, variables: { event_id: id } })
+    .then(() => {
+      return id;
+    })
+    .catch(() => {
+      return id;
+    });
 }

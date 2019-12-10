@@ -1,10 +1,12 @@
 import { eventConstants } from "stores/constants";
 import { eventService } from "services";
+import { history } from "../../helpers";
 
 export const eventActions = {
   addEvent,
   getEvents,
-  updateEvent
+  updateEvent,
+  deleteEvent
 };
 
 function addEvent(event) {
@@ -93,18 +95,26 @@ function getEvents() {
 // }
 //
 // // prefixed function name with underscore because delete is a reserved word in javascript
-// function _delete(id) {
-//     return dispatch => {
-//         dispatch(request(id));
-//
-//         userService.delete(id)
-//             .then(
-//                 user => dispatch(success(id)),
-//                 error => dispatch(failure(id, error.toString()))
-//             );
-//     };
-//
-//     function request(id) { return { type: eventConstants.DELETE_REQUEST, id } }
-//     function success(id) { return { type: eventConstants.DELETE_SUCCESS, id } }
-//     function failure(id, error) { return { type: eventConstants.DELETE_FAILURE, id, error } }
-// }
+function deleteEvent(id) {
+  return dispatch => {
+    dispatch(request(id));
+
+    eventService.delete(id).then(
+      event => {
+        dispatch(success(id));
+        history.push("/listView");
+      },
+      error => dispatch(failure(id, error.toString()))
+    );
+  };
+
+  function request(id) {
+    return { type: eventConstants.EVENT_DELETE_REQUEST, id };
+  }
+  function success(id) {
+    return { type: eventConstants.EVENT_DELETE_SUCCESS, id };
+  }
+  function failure(id, error) {
+    return { type: eventConstants.EVENT_DELETE_FAILURE, id, error };
+  }
+}

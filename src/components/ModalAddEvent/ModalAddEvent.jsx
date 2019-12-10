@@ -6,16 +6,43 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "./ModalAddEvent.scss";
 import { ErrorMessage, Field, Formik } from "formik";
-import { eventActions } from "stores/actions";
+import { eventActions, uiActions } from "stores/actions";
 import { connect } from "react-redux";
+import { SelectField } from "../SelectField";
 
 const ModalAddEvent = props => {
+  const {
+    addEvent,
+    getLocations,
+    getEventTypes,
+    event,
+    error,
+    locations,
+    eventTypes
+  } = props;
+
+  if (!locations) {
+    getLocations();
+  }
+
+  if (!eventTypes) {
+    getEventTypes();
+  }
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
-  const { addEvent, event, error } = props;
+  const locationsOptions =
+    locations &&
+    locations.map(item => {
+      return { value: item.slug, label: item.name };
+    });
+  const typesOptions =
+    eventTypes &&
+    eventTypes.map(item => {
+      return { value: item.name, label: item.name };
+    });
 
   event &&
     setTimeout(() => {
@@ -32,7 +59,8 @@ const ModalAddEvent = props => {
           initialValues={{
             name: "",
             event_date: "",
-            location: "",
+            address: "",
+            city_id: "",
             type: "",
             description: "",
             entryFee: ""
@@ -45,11 +73,8 @@ const ModalAddEvent = props => {
             if (!values.event_date) {
               errors.event_date = "Date is either empty or invalid";
             }
-            if (!values.location) {
-              errors.location = "Location is either empty or invalid";
-            }
-            if (!values.type) {
-              errors.type = "Type is either empty or invalid";
+            if (!values.city_id) {
+              errors.city_id = "Location is either empty or invalid";
             }
             if (!values.description) {
               errors.description = "Description is either empty or invalid";
@@ -57,6 +82,8 @@ const ModalAddEvent = props => {
             if (!values.entryFee) {
               errors.entryFee = "Entry fee is either empty or invalid";
             }
+            console.log("errors", errors);
+            console.log("values", values);
             return errors;
           }}
           onSubmit={(values, { setSubmitting }) => {
@@ -93,7 +120,7 @@ const ModalAddEvent = props => {
                   <label htmlFor="formDate">Date</label>
                   <DatePicker
                     type="date"
-                    name="date"
+                    name="event_date"
                     className={
                       "form-control " + (errors.event_date ? "is-invalid" : "")
                     }
@@ -111,17 +138,34 @@ const ModalAddEvent = props => {
                 </div>
 
                 <div className="form-group">
-                  <label htmlFor="formLocation">Location</label>
+                  <label htmlFor="formName">Address</label>
                   <Field
                     type="text"
-                    name="location"
+                    name="address"
+                    id={"formAddress"}
                     className={
-                      "form-control " + (errors.location ? "is-invalid" : "")
+                      "form-control " + (errors.address ? "is-invalid" : "")
                     }
-                    id={"formLocation"}
                   />
                   <ErrorMessage
-                    name="location"
+                    name="address"
+                    component="div"
+                    className={"invalid-feedback"}
+                  />
+                </div>
+                <div className="form-group">
+                  <label htmlFor="formLocation">Location</label>
+                  <Field
+                    name="city_id"
+                    component={SelectField}
+                    options={locationsOptions}
+                    field={{ name: "city_id", value: values.city_id }}
+                    className={
+                      "form-control " + (errors.city_id ? "is-invalid" : "")
+                    }
+                  />
+                  <ErrorMessage
+                    name="city_id"
                     component="div"
                     className={"invalid-feedback"}
                   />
@@ -130,12 +174,13 @@ const ModalAddEvent = props => {
                 <div className="form-group">
                   <label htmlFor="formType">Type</label>
                   <Field
-                    type="text"
                     name="type"
                     className={
                       "form-control " + (errors.type ? "is-invalid" : "")
                     }
-                    id={"formType"}
+                    component={SelectField}
+                    options={typesOptions}
+                    field={{ name: "type", value: values.type }}
                   />
                   <ErrorMessage
                     name="type"
@@ -204,11 +249,14 @@ const ModalAddEvent = props => {
 
 const mapStateToProps = state => {
   const { event, error } = state.events || {};
-  return { event, error };
+  const { locations, eventTypes } = state.ui;
+  return { event, error, locations, eventTypes };
 };
 
 const actionCreators = {
-  addEvent: eventActions.addEvent
+  addEvent: eventActions.addEvent,
+  getLocations: uiActions.getLocations,
+  getEventTypes: uiActions.getEventTypes
 };
 
 export default connect(mapStateToProps, actionCreators)(ModalAddEvent);
