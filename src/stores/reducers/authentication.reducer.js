@@ -16,7 +16,6 @@ export function authentication(state = initialState, action) {
                 user: action.user
             };
         case userConstants.LOGIN_FAILURE:
-            console.log('action', action);
             return {
                 error: action.error
             };

@@ -18,7 +18,7 @@ class HomePage extends React.Component {
         return (
             <div className="vh-100">
                 <TopNavigation/>
-                <MapContainer></MapContainer>
+                <MapContainer/>
             </div>
         );
     }
@@ -37,6 +37,7 @@ const actionCreators = {
 
 const connectedHomePage = connect(mapState, actionCreators)(HomePage);
 export {connectedHomePage as HomePage};
+
 
 
 
