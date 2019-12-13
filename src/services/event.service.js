@@ -10,19 +10,47 @@ export const eventService = {
   delete: _delete
 };
 
+
 function getAll() {
   const QUERY = gql`
-    query {
-      users {
-        id
-        email
-        token
-      }
+  query {
+    events {
+       id
+      event_type
+      user_id
+      address
+      name
+      description
+      fee
+      event_date
     }
+  }
   `;
 
-  return getClient().query({ query: QUERY });
+  return getClient()
+  .query({ query: QUERY })
+  .then(result => {
+    const {
+      data: { events = {} }
+    } = result;
+
+    return events;
+  });
 }
+
+// function getAll() {
+//   const QUERY = gql`
+//     query {
+//       users {
+//         id
+//         email
+//         token
+//       }
+//     }
+//   `;
+
+//   return getClient().query({ query: QUERY });
+// }
 
 function create(event) {
   const {

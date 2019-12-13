@@ -3,6 +3,7 @@ import { eventService } from "services";
 import { history } from "../../helpers";
 
 export const eventActions = {
+  getAllEvents,
   addEvent,
   getEvents,
   updateEvent,
@@ -60,7 +61,7 @@ function updateEvent(event) {
 function getEvents() {
   return dispatch => {
     dispatch(request());
-
+   
     eventService.getByUser().then(
       events => dispatch(success(events)),
       error => dispatch(failure(error))
@@ -116,5 +117,27 @@ function deleteEvent(id) {
   }
   function failure(id, error) {
     return { type: eventConstants.EVENT_DELETE_FAILURE, id, error };
+  }
+}
+
+
+function getAllEvents() {
+  return dispatch => {
+    dispatch(request());
+
+    eventService.getAll().then(
+      events => dispatch(success(events)),
+      error => dispatch(failure(error))
+    );
+  };
+
+  function request() {
+    return { type: eventConstants.EVENT_GET_REQUEST };
+  }
+  function success(events) {
+    return { type: eventConstants.EVENT_GET_SUCCESS, events };
+  }
+  function failure(error) {
+    return { type: eventConstants.EVENT_GET_FAILURE, error };
   }
 }

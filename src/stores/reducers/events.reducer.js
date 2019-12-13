@@ -1,7 +1,7 @@
 import { eventConstants } from "stores/constants";
 
 export function events(
-  state = { loading: false, error: null, events: null, event: null },
+  state = { loading: false, error: null,items: null, events: null, event: null },
   action
 ) {
   switch (action.type) {

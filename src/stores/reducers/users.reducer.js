@@ -1,6 +1,8 @@
 import { userConstants } from 'stores/constants';
 
-export function users(state = {loading: false, error: null, items: null}, action) {
+export function users(
+    state = {loading: false, error: null, items: null, users:null ,user:null}, 
+    action) {
     switch (action.type) {
         case userConstants.GETALL_REQUEST:
             return {
@@ -8,7 +10,9 @@ export function users(state = {loading: false, error: null, items: null}, action
             };
         case userConstants.GETALL_SUCCESS:
             return {
-                items: action.users
+                ...state,
+                loading: false,
+                users: action.users
             };
         case userConstants.GETALL_FAILURE:
             return {

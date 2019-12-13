@@ -4,13 +4,15 @@ import {faEdit, faSearch} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {Link} from "react-router-dom";
 import {Field, Formik} from "formik";
-import {ModalDeleteUser} from "../../components/ModalDeleteUser";
+import ModalDeleteUser from "../../components/ModalDeleteUser/ModalDeleteUser";
+import { connect } from "react-redux";
+import { userActions } from "stores/actions";
 
-export class AdminUsersPage extends React.Component {
+class AdminUsersPage extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            events: {
+            users: {
                 total: 100,
                 records: [
                     {
@@ -41,8 +43,20 @@ export class AdminUsersPage extends React.Component {
             }
         }
     }
-
-    render() {
+    componentDidMount() {
+        const {getAllUsersConst} =this.props;
+        if (getAllUsersConst){
+          getAllUsersConst();
+        }
+      }
+        render() {
+            const{
+              users,
+              loading,
+              match: {
+                params: { userId }
+              }
+            } = this.props;
         return (
             <>
                 <TopNavigation/>
@@ -119,7 +133,7 @@ export class AdminUsersPage extends React.Component {
 
                             <div className={"card mt-4 mb-4"}>
                                 <div className={"card-header"}>
-                                    Events
+                                    Users
                                 </div>
                                 <div className={"card-body p-0"}>
                                     <div className={"table-responsive"}>
@@ -134,12 +148,17 @@ export class AdminUsersPage extends React.Component {
                                             </tr>
                                             </thead>
                                             <tbody>
-                                            {this.state.events.records.map((item, index) => {
-                                                return <tr key={index}>
+                                            {loading && <tr>
+                      <td colSpan="5"><div><center>Loading users....</center></div></td>
+                        </tr>}
+                                            {users && users.map((item, index) => {
+                                               
+                                                return (
+                                                <tr key={index}>
                                                     <td>{item.id}</td>
                                                     <td><Link to={"./user/" + item.id}>{item.email}</Link></td>
                                                     <td>{item.name}</td>
-                                                    <td>{item.isAdmin.toString()}</td>
+                                                    <td>{item.admin.toString()}</td>
                                                     <td className={"text-center"}>
                                                         <Link to={"./user/" + item.id}
                                                               className={"icon-default"}><FontAwesomeIcon
@@ -147,6 +166,7 @@ export class AdminUsersPage extends React.Component {
                                                         <ModalDeleteUser user={item}/>
                                                     </td>
                                                 </tr>
+                                                );
                                             })}
 
                                             </tbody>
@@ -169,3 +189,22 @@ export class AdminUsersPage extends React.Component {
 
 
 
+const mapStateToProps = state => {
+    const { users, user, loading } = state.users;
+    return { users, user, loading};
+  }
+  
+  
+  const adminUsersList = {
+    getAllUsersConst: userActions.getAllUsersAction,
+  };
+  
+  
+  const connectedRegisterPage = connect(
+    mapStateToProps,
+    adminUsersList
+  )(AdminUsersPage);
+  
+  export { connectedRegisterPage as AdminUsersPage };
+  
+  

@@ -86,6 +86,7 @@ const ModalAddEvent = props => {
           }}
           onSubmit={(values, { setSubmitting }) => {
             addEvent(values);
+            handleClose();
             setSubmitting(false);
           }}
         >

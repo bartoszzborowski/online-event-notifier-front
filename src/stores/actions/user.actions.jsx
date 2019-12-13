@@ -7,6 +7,9 @@ export const userActions = {
     logout,
     register,
     getAll,
+    getUserAction,
+    getAllUsersAction,
+    updateUser,
     delete: _delete,
 };
 
@@ -36,9 +39,9 @@ function logout() {
 }
 
 function register(user) {
+
     return dispatch => {
         dispatch(request(user));
-
         userService.register(user)
             .then(
                 user => {
@@ -57,7 +60,7 @@ function register(user) {
 }
 
 function getAll() {
-    return dispatch => {
+    return dispatch => {    
         dispatch(request());
 
         userService.getAll()
@@ -88,3 +91,55 @@ function _delete(id) {
     function success(id) { return { type: userConstants.DELETE_SUCCESS, id } }
     function failure(id, error) { return { type: userConstants.DELETE_FAILURE, id, error } }
 }
+
+
+function getAllUsersAction() {
+    return dispatch => {    
+        dispatch(request());
+
+        userService.getAllUsers()
+            .then(
+                users => dispatch(success(users)),
+                error => dispatch(failure(error))
+            );
+    };
+
+    function request() { return { type: userConstants.GETALL_REQUEST } }
+    function success(users) { return { type: userConstants.GETALL_SUCCESS, users } }
+    function failure(error) { return { type: userConstants.GETALL_FAILURE, error } }
+}
+
+function getUserAction($userId) {
+    return dispatch => {    
+        dispatch(request($userId));
+
+        userService.getById($userId)
+            .then(
+                users => dispatch(success(users)),
+                error => dispatch(failure(error))
+            );
+    };
+
+    function request() { return { type: userConstants.GETALL_REQUEST } }
+    function success(users) { return { type: userConstants.GETALL_SUCCESS, users } }
+    function failure(error) { return { type: userConstants.GETALL_FAILURE, error } }
+}
+
+
+function updateUser(users) {
+    return dispatch => {
+      dispatch(request(users));
+      userService.update(users).then(
+        users => {
+          dispatch(success(users));
+        },
+        error => {
+          dispatch(failure(error.toString()));
+        }
+      );
+    };
+  
+    function request() { return { type: userConstants.GETALL_REQUEST } }
+    function success(users) { return { type: userConstants.GETALL_SUCCESS, users } }
+    function failure(error) { return { type: userConstants.GETALL_FAILURE, error } }
+  }

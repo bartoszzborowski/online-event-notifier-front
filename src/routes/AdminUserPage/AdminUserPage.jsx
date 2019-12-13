@@ -2,8 +2,10 @@ import React from 'react';
 import {TopNavigation} from "../../components/TopNavigation";
 import {Link} from "react-router-dom";
 import {ErrorMessage, Field, Formik} from "formik";
-
-export class AdminUserPage extends React.Component {
+import { connect } from "react-redux";
+import { userActions } from "stores/actions";
+import { EventListItem } from "../../components/EventListItem/EventListItem";
+class AdminUserPage extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -11,25 +13,50 @@ export class AdminUserPage extends React.Component {
                 id: 1,
                 email: 'ww@ww.ww',
                 name: 'Jan Kowalski',
-                isAdmin: false
+                admin: false
             }
         }
     }
 
+    
+    componentDidMount() {
+        const {getAllUserConst} =this.props;
+        if (getAllUserConst){
+            getAllUserConst();
+        }
+      }
     render() {
+        const{
+            users,
+            loading,
+            updateUserConst,
+            match: {
+              params: { userId }
+            }
+          } = this.props;
+
+        const user = users ? (users.find ? users.find(x => x.id === userId) : null):null; // TODO: to tu jest bez sensu trzeba to poprawić na zaciaganie z bazy pojedenczego rekordu cos tutaj z userId jest nie tak bo nie przekazuje go dalej.
         return (
             <>
+            
                 <TopNavigation/>
                 <div className={"container-fluid"}>
                     <div className={"row"} style={{marginTop: '5rem'}}>
                         <div className={"col-12"}>
                             <div className={"card"}>
+                            {loading &&
+                              <div className={"card-header"}>
+                              <center>Loading user....</center>
+                          </div>
+                            }
+                                {user &&  (
+                                <>
                                 <Formik
                                     initialValues={{
-                                        id: this.state.user ? this.state.user.id : '',
-                                        email: this.state.user ? this.state.user.email : '',
-                                        name: this.state.user ? this.state.user.name : '',
-                                        isAdmin: this.state.user ? this.state.user.isAdmin.toString() : ''
+                                        id:  user.id ,
+                                        email: user.email ,
+                                        name:   user.name ,
+                                        admin:  user.admin.toString() 
                                     }}
                                     validate={values => {
                                         const errors = {};
@@ -39,16 +66,22 @@ export class AdminUserPage extends React.Component {
                                         if (!values.name) {
                                             errors.name = 'Name is either empty or invalid';
                                         }
-                                        if (!values.isAdmin) {
-                                            errors.isAdmin = 'Role is either empty or invalid';
+                                        if (!values.admin) {
+                                            errors.admin = 'Role is either empty or invalid';
                                         }
                                         return errors;
                                     }}
                                     onSubmit={(values, {setSubmitting}) => {
+                                        values.admin ? values.admin=true:values.admin=false;
+                                        updateUserConst(values);
+                                        setSubmitting(false);
                                         setTimeout(() => {
-                                            alert(JSON.stringify(values, null, 2));
-                                            setSubmitting(false);
-                                        }, 400);
+                                            window.location.reload();
+                                          }, 2000);
+                                        // setTimeout(() => {
+                                        //     alert(JSON.stringify(values, null, 2));
+                                        //     setSubmitting(false);
+                                        // }, 400);
                                     }}>
                                     {({
                                           setFieldValue,
@@ -86,21 +119,21 @@ export class AdminUserPage extends React.Component {
                                                                   className={"invalid-feedback"}/>
                                                 </div>
                                                 <div className="form-group">
-                                                    <label htmlFor="isAdmin">Is Admin</label>
+                                                    <label htmlFor="admin">Is Admin</label>
                                                     <select
-                                                        className={"custom-select custom-select-sm " + (errors.isAdmin ? 'is-invalid' : '')}
-                                                        name={"isAdmin"} id={"isAdmin"}
+                                                        className={"custom-select custom-select-sm " + (errors.admin ? 'is-invalid' : '')}
+                                                        name={"admin"} id={"admin"}
                                                         onChange={(event) => {
-                                                            setFieldValue('isAdmin', event.target.value);
+                                                            setFieldValue('admin', event.target.value);
                                                         }}>
                                                         <option value={"true"}
-                                                                selected={values.isAdmin === this.state.user.isAdmin.toString()}>True
+                                                                selected={values.admin === this.state.user.admin.toString()}>True
                                                         </option>
                                                         <option value={"false"}
-                                                                selected={values.isAdmin === this.state.user.isAdmin.toString()}>False
+                                                                selected={values.admin === this.state.user.admin.toString()}>False
                                                         </option>
                                                     </select>
-                                                    <ErrorMessage name="isAdmin" component="div"
+                                                    <ErrorMessage name="admin" component="div"
                                                                   className={"invalid-feedback"}/>
                                                 </div>
                                             </div>
@@ -115,10 +148,14 @@ export class AdminUserPage extends React.Component {
                                         </form>
                                     )}
                                 </Formik>
+                                </>
+                                )}
                             </div>
+                               
                         </div>
                     </div>
                 </div>
+            
             </>
         );
     }
@@ -126,3 +163,23 @@ export class AdminUserPage extends React.Component {
 
 
 
+const mapStateToProps = state => {
+    const { users, user, loading } = state.users;
+    return { users, user, loading};
+  }
+  
+  
+  const adminUsersList = {
+      
+    getAllUserConst: userActions.getUserAction,
+    updateUserConst:userActions.updateUser
+  };
+  
+  
+  const connectedRegisterPage = connect(
+    mapStateToProps,
+    adminUsersList
+  )(AdminUserPage);
+  
+  export { connectedRegisterPage as AdminUserPage };
+  

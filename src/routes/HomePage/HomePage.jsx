@@ -6,7 +6,8 @@ import {userActions} from "../../stores/actions/user.actions";
 
 class HomePage extends React.Component {
     componentDidMount() {
-        this.props.getUsers();
+        // this.props.getUsers();
+        // Po co na samym starcie zaciągać pełną baze użytkowników? 
     }
 
     handleDeleteUser(id) {
@@ -31,7 +32,8 @@ function mapState(state) {
 }
 
 const actionCreators = {
-    getUsers: userActions.getAll,
+    // getUsers: userActions.getAll,
+     // Po co na samym starcie zaciągać pełną baze użytkowników? 
     deleteUser: userActions.delete
 };
 
