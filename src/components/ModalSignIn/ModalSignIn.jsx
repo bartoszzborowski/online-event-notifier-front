@@ -44,7 +44,7 @@ const ModalSignIn = props => {
                 handleClose();
               }
               setSubmitting(false);
-            }, 1000);
+            }, 1500);
           }}
         >
           {({ errors, handleSubmit, isSubmitting }) => (
