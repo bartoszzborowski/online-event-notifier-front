@@ -1,22 +1,42 @@
 import { userConstants } from "stores/constants";
 
 export function users(
-  state = { loading: false, error: null, users: null, user: null },
+  state = {
+    loading: false,
+    error: null,
+    users: null,
+    user: null,
+    success: false
+  },
   action
 ) {
   switch (action.type) {
+    case userConstants.GET_BY_ID_REQUEST:
     case userConstants.GETALL_REQUEST:
       return {
-        loading: true
+        ...state,
+        loading: true,
+        success: false
       };
     case userConstants.GETALL_SUCCESS:
       return {
         ...state,
         loading: false,
+        success: true,
         users: action.users
       };
+    case userConstants.GET_BY_ID_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        success: true,
+        user: action.user
+      };
+    case userConstants.GET_BY_ID_FAILURE:
     case userConstants.GETALL_FAILURE:
       return {
+        ...state,
+        success: false,
         error: action.error
       };
     case userConstants.DELETE_REQUEST:

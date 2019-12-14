@@ -195,11 +195,13 @@ function register(user) {
 }
 
 function update(users) {
-  const { id, name, email, admin } = users;
+  const { id, name, email, admin,surname,password } = users;
   const enhanceUser = {
     id,
     name,
     email,
+    surname,
+    password,
     admin
   };
 
@@ -221,7 +223,7 @@ function update(users) {
       const {
         data: { users = {} }
       } = result;
-
+      console.log("result", result);
       return users;
     });
 }
