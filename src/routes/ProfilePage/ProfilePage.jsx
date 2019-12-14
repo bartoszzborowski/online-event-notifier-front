@@ -5,17 +5,24 @@ import { EventListItem } from "../../components/EventListItem";
 import { Button } from "react-bootstrap";
 import { connect } from "react-redux";
 import { eventActions } from "stores/actions";
+import { userActions } from "../../stores/actions";
 
 class ProfilePage extends React.Component {
   componentDidMount() {
-    const { getEvents } = this.props;
+    const { getEvents,getAllUserConst } = this.props;
+    if (getAllUserConst){
+      getAllUserConst();
+  }
     if (getEvents) {
       getEvents();
     }
   }
 
   render() {
-    const { events, userEvents, loading } = this.props;
+    const {updateUserConst, users, user, events, userEvents, loading,   
+      match: {
+      params: { userId }
+    }} = this.props;
     return (
       <>
         <TopNavigation />
@@ -30,8 +37,9 @@ class ProfilePage extends React.Component {
                       <h5>Account data</h5>
                       <Formik
                         initialValues={{
-                          email: "email@email.email",
-                          name: "",
+                          email: user.email,
+                          name: user.name,
+                          surname: user.surname,
                           password: "",
                           confirmPassword: ""
                         }}
@@ -41,9 +49,19 @@ class ProfilePage extends React.Component {
                             errors.name =
                               "Name is either not provided or is invalid";
                           }
+                          if (!values.surname) {
+                            errors.surname =
+                                "Surname is either not provided or is invalid";
+                          }
+                          if (values.password !== values.confirmPassword) {
+                            errors.confirmPassword =
+                                "confirm password is not like password";
+                          }
                           return errors;
                         }}
                         onSubmit={(values, { setSubmitting }) => {
+                          values.id=user.id;
+                          updateUserConst(values);
                           setTimeout(() => {
                             alert(JSON.stringify(values, null, 2));
                             setSubmitting(false);
@@ -87,6 +105,24 @@ class ProfilePage extends React.Component {
                                 name="name"
                                 component="div"
                                 className={"invalid-feedback"}
+                              />
+                            </div>
+                            <div className="form-group">
+                              <label htmlFor="name">Surname</label>
+                              <Field
+                                  type="text"
+                                  name="surname"
+                                  id={"surname"}
+                                  className={
+                                    "form-control " +
+                                    (errors.surname ? "is-invalid" : "")
+                                  }
+                                  placeholder="Enter surname"
+                              />
+                              <ErrorMessage
+                                  name="surname"
+                                  component="div"
+                                  className={"invalid-feedback"}
                               />
                             </div>
                             <div className="form-group">
@@ -174,15 +210,16 @@ class ProfilePage extends React.Component {
     );
   }
 }
-
 const mapStateToProps = state => {
+  const { user = null } = state.authentication || {};
   const { events, event, loading } = state.events;
   const { userEvents } = state.authentication;
-  return { events, event, loading, userEvents };
+  return { user, events, event, loading, userEvents };
 };
 
 const actionCreators = {
-  getEvents: eventActions.getEvents
+  getEvents: eventActions.getEvents,
+updateUserConst: userActions.updateUser
 };
 
 const connectedRegisterPage = connect(

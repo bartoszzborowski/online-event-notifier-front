@@ -32,6 +32,7 @@ function search(parameters) {
         event_type
         user_id
         address
+        city_id
         name
         description
         fee
@@ -82,11 +83,14 @@ function getAll() {
         event_type
         user_id
         address
+        city_id
         name
         description
         fee
         event_date
         attendance_counter
+        lat
+        lng
       }
     }
   `;
@@ -108,7 +112,9 @@ function create(event) {
     city_id,
     type,
     description,
-    entryFee
+    entryFee,
+    latitude,
+    longitude,
   } = event;
   const enhanceEvent = {
     address: address,
@@ -117,7 +123,9 @@ function create(event) {
     event_date,
     event_type: type,
     fee: entryFee,
-    name
+    name,
+    lat:latitude,
+    lng:longitude,
   };
 
   const MUTATION = gql`
@@ -127,10 +135,13 @@ function create(event) {
         event_type
         user_id
         address
+        city_id
         name
         description
         fee
         event_date
+        lat
+        lng
       }
     }
   `;
@@ -154,10 +165,13 @@ function getById(id) {
         event_type
         user_id
         address
+        city_id
         name
         description
         fee
         event_date
+        lat
+        lng
       }
     }
   `;
@@ -178,6 +192,8 @@ function getByUser() {
         fee
         event_date
         attendance_counter
+        lat
+        lng
       }
     }
   `;
@@ -202,7 +218,9 @@ function update(event) {
     city_id,
     type,
     description,
-    entryFee
+    entryFee,
+    latitude,
+    longitude,
   } = event;
   const enhanceEvent = {
     id,
@@ -212,7 +230,9 @@ function update(event) {
     event_date,
     event_type: type,
     fee: entryFee,
-    name
+    name,
+    lat:latitude,
+    lng:longitude,
   };
 
   const MUTATION = gql`
@@ -227,6 +247,8 @@ function update(event) {
         description
         fee
         event_date
+        lat
+        lng
       }
     }
   `;

@@ -252,7 +252,9 @@ class ListViewPage extends React.PureComponent {
                                             address: item.address || "",
                                             type: item.event_type || "",
                                             description: item.description || "",
-                                            entryFee: item.fee || 0.0
+                                            entryFee: item.fee || 0.0,
+                                            latitude: item.lat || 0.0,
+                                            longitude: item.lng || 0.0,
                                         }}
                                         validate={values => {
                                             const errors = {};
@@ -260,7 +262,7 @@ class ListViewPage extends React.PureComponent {
                                                 errors.name = "Name is either empty or invalid";
                                             }
                                             if (!values.event_date) {
-                                                errors.date = "Date is either empty or invalid";
+                                                errors.event_date = "Date is either empty or invalid";
                                             }
                                             if (!values.city_id) {
                                                 errors.city_id = "Address is either empty or invalid";
@@ -276,6 +278,7 @@ class ListViewPage extends React.PureComponent {
                                             return errors;
                                         }}
                                         onSubmit={(values, {setSubmitting}) => {
+                                            console.log('submit');
                                             updateEvent(values);
                                             this.toggleToast();
                                             setSubmitting(false);
@@ -356,13 +359,52 @@ class ListViewPage extends React.PureComponent {
                                                         className={"invalid-feedback"}
                                                     />
                                                 </div>
+                                                <div className={"form-row"}>
+                                    <div className={"col-sm-6"}>
+                                        <div className="form-group">
+                                            <label htmlFor="formName">Latitude</label>
+                                            <Field
+                                                type="text"
+                                                name="latitude"
+                                                id={"formLatitude"}
+                                                className={
+                                                    "form-control " + (errors.latitude ? "is-invalid" : "")
+                                                }
+                                            />
+                                            <ErrorMessage
+                                                name="latitude"
+                                                component="div"
+                                                className={"invalid-feedback"}
+                                            />
+                                        </div>
+                                    </div>
+                                    <div className={"col-sm-6"}>
+                                        <div className="form-group">
+                                            <label htmlFor="formName">Longitude</label>
+                                            <Field
+                                                type="text"
+                                                name="longitude"
+                                                id={"formLongitude"}
+                                                className={
+                                                    "form-control " + (errors.longitude ? "is-invalid" : "")
+                                                }
+                                            />
+                                            <ErrorMessage
+                                                name="longitude"
+                                                component="div"
+                                                className={"invalid-feedback"}
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
                                                 <div className="form-group">
                                                     <label htmlFor="formLocation">Location</label>
                                                     <Field
+                                                        as="select"
                                                         name="city_id"
+                                                        id={"city_id"}
                                                         component={SelectField}
                                                         options={locationsOptions}
-                                                        field={{value: values.city_id}}
                                                         className={
                                                             "form-control " +
                                                             (errors.city_id ? "is-invalid" : "")
@@ -378,6 +420,7 @@ class ListViewPage extends React.PureComponent {
                                                 <div className="form-group">
                                                     <label htmlFor="formType">Type</label>
                                                     <Field
+                                                        as="select"
                                                         name="type"
                                                         className={
                                                             "form-control " +
@@ -385,7 +428,6 @@ class ListViewPage extends React.PureComponent {
                                                         }
                                                         component={SelectField}
                                                         options={typesOptions}
-                                                        field={{value: values.type}}
                                                     />
                                                     <ErrorMessage
                                                         name="type"
@@ -441,8 +483,7 @@ class ListViewPage extends React.PureComponent {
                                                     <button
                                                         type="submit"
                                                         className={"btn btn-warning"}
-                                                        disabled={isSubmitting}
-                                                    >
+                                                        disabled={isSubmitting}>
                                                         Edit
                                                     </button>
                                                 </div>
