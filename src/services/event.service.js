@@ -32,6 +32,7 @@ function search(parameters) {
         event_type
         user_id
         address
+        city_id
         name
         description
         fee
@@ -82,6 +83,7 @@ function getAll() {
         event_type
         user_id
         address
+        city_id
         name
         description
         fee
@@ -133,6 +135,7 @@ function create(event) {
         event_type
         user_id
         address
+        city_id
         name
         description
         fee
@@ -162,6 +165,7 @@ function getById(id) {
         event_type
         user_id
         address
+        city_id
         name
         description
         fee
