@@ -8,7 +8,7 @@ class HomePage extends React.Component {
     return (
       <div className="vh-100">
         <TopNavigation />
-        <MapContainer />
+        <MapContainer events={[]}/>
         <NotificationArea/>
       </div>
     );

@@ -6,10 +6,7 @@ export class MapContainer extends React.Component {
         return (
             <Map google={this.props.google}
                  zoom={15}
-                 initialCenter={{
-                    lat: 0,
-                    lng: 2
-                }}
+                 initialCenter={{lat: 52.227889, lng: 21.001778}}
             fullscreenControl={false}>
                 {this.props.events &&
                 this.props.events.map((marker, index) => {
