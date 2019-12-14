@@ -1,6 +1,9 @@
 $tile_width: 8rem;
 $tile_height: 8rem;
 
+body {
+    overflow: auto;
+}
 
 .tile {
     margin-bottom: 0.5rem;

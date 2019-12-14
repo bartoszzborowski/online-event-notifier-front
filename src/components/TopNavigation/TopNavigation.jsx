@@ -145,7 +145,7 @@ class TopNavigation extends React.Component {
                           name: "event_type",
                           value: values.event_type
                         }}
-                        className={"form-control "}
+                        className={"form-control"}
                       />
                     </div>
                   </div>
@@ -160,7 +160,7 @@ class TopNavigation extends React.Component {
                           name: "city_id",
                           value: values.city_id
                         }}
-                        className={"form-control "}
+                        className={"form-control"}
                       />
                     </div>
                   </div>
@@ -170,7 +170,7 @@ class TopNavigation extends React.Component {
                       <DatePicker
                         type="date"
                         name="date"
-                        className={"form-control form-control-sm"}
+                        className={"form-control"}
                         selected={values.date}
                         id={"formDate"}
                         onChange={date => {
@@ -187,7 +187,7 @@ class TopNavigation extends React.Component {
                         type="text"
                         name="entry_fee"
                         id={"entry_fee"}
-                        className={"form-control form-control-sm"}
+                        className={"form-control"}
                         placeholder="Enter entry fee"
                       />
                     </div>

@@ -149,6 +149,8 @@ class ProfilePage extends React.Component {
                         userEvents.map((item, index) => {
                           return <EventListItem item={item} key={index} />;
                         })}
+                      {(!userEvents || userEvents.length === 0) &&
+                      <div>You are not attending any events yet</div>}
                     </div>
                     <div className={"col-sm-4"}>
                       <h5>Events you've created</h5>
@@ -158,6 +160,9 @@ class ProfilePage extends React.Component {
                         events.map((item, index) => {
                           return <EventListItem item={item} key={index} />;
                         })}
+                      {!loading &&
+                      (!events || events.length === 0) &&
+                      <div>You haven't created any events yet</div>}
                     </div>
                   </div>
                 </div>

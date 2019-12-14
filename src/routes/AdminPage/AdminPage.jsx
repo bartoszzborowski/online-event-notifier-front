@@ -10,7 +10,7 @@ export class AdminPage extends React.Component {
     return (
       <>
         <TopNavigation />
-        <div style={{ overflowY: "scroll" }} className={"container-fluid"}>
+        <div className={"container-fluid"}>
           <div className={"row"} style={{ marginTop: "5rem" }}>
             <div className={"col-12"}>
               <div className={"card"}>

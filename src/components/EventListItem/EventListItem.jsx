@@ -6,16 +6,18 @@ export class EventListItem extends React.Component {
   render() {
     const item = this.props.item;
     const selected = this.props.selected;
-    console.log("locaItem", item);
     return (
       item && (
         <div className={"element " + (selected ? "selected" : "")}>
           <div className={"form-row"}>
             <div className={"col"}>{item.name}</div>
             <div className={"col-auto"}>
-              <Link to={"../listView/" + item.id} className={"event-link"}>
-                CHECK
-              </Link>
+                {!selected &&
+                <Link to={"../listView/" + item.id} className={"event-link " + (selected ? 'text-secondary' : '')}>
+                    CHECK
+                </Link>
+                }
+                {selected && <span className={"text-secondary"}>CHECK</span>}
             </div>
           </div>
           <div className={"date-and-location"}>
