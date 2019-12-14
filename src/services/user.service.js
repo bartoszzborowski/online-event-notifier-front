@@ -5,6 +5,7 @@ export const userService = {
   login,
   logout,
   register,
+  getAllUsers,
   getAll,
   getById,
   update,
@@ -94,19 +95,145 @@ function getAll() {
   // return fetch(`${config.apiUrl}/users`, requestOptions).then(handleResponse);
 }
 
-function getById(id) {
-  return null;
+function getAllUsers() {
+  const QUERY = gql`
+    query {
+      users {
+        id
+        email
+        name
+        surname
+        admin
+      }
+    }
+  `;
+
+  return getClient()
+    .query({ query: QUERY })
+    .then(result => {
+      const {
+        data: { users = {} }
+      } = result;
+
+      return users;
+    });
+  // return fetch(`${config.apiUrl}/users`, requestOptions).then(handleResponse);
+}
+
+function getById(userId) {
+  const QUERY = gql`
+  query($userId: Int) {
+    users(id: $userId)  {
+      id
+      email
+      name
+      surname
+      admin
+    }
+  }
+`;
+
+return getClient()
+  .query({ query: QUERY, variables: { id: userId } })
+  .then(result => {
+    const {
+      data: { users = {} }
+    } = result;
+    return users;
+  });
 }
 
 function register(user) {
-  return null;
+  const {
+    firstName,
+    lastName,
+    password,
+    username
+  } = user;
+
+ 
+  const enhanceUser = {
+    name: firstName,
+    surname: lastName,
+    email: username,
+    password,
+  };
+
+
+  const MUTATION = gql`
+    mutation($input: UserInputType) {
+      createUser(input: $input) {
+        id
+        email
+        token
+      }
+    }
+  `;
+  return getClient()
+    .mutate({ mutation: MUTATION, variables: { input: { ...enhanceUser } } })
+    .then(result => {
+     
+      const {
+        data: { user = {} }
+      } = result;
+     
+      return user;
+    });
 }
 
-function update(user) {
-  return null;
+function update(users) {
+  const {
+    id,
+  name,
+  email,
+  admin,
+  } = users;
+  const enhanceUser = {
+    id,
+    name,
+    email,
+    admin,
+  };
+
+  const MUTATION = gql`
+    mutation($input: UpdateUserInputType) {
+      updateUser(input: $input) {
+        id
+        email
+        name
+        surname
+        admin
+      }
+    }
+  `;
+
+  return getClient()
+    .mutate({ mutation: MUTATION, variables: { input: { ...enhanceUser } } })
+    .then(result => {
+      const {
+        data: { users = {} }
+      } = result;
+
+      return users;
+    });
 }
 
 // prefixed function name with underscore because delete is a reserved word in javascript
+
 function _delete(id) {
-  return null;
+  const MUTATION = gql`
+    mutation($users_id: Int) {
+      deleteEvents(users_id: $users_id)
+    }
+  `;
+
+  return getClient()
+    .mutate({ mutation: MUTATION, variables: { users_id: id } })
+    .then(() => {
+      return id;
+    })
+    .catch(() => {
+      return id;
+    });
 }
+

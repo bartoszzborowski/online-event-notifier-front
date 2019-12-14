@@ -1,13 +1,18 @@
 import React from "react";
 import { TopNavigation } from "../../components/TopNavigation";
 import { faEdit, faSearch } from "@fortawesome/free-solid-svg-icons";
+import MapContainer from "../../components/MapContainer/MapContainer";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { EventListItem } from "../../components/EventListItem/EventListItem";
 import { Link } from "react-router-dom";
 import { Field, Formik } from "formik";
 import DatePicker from "react-datepicker";
 import ModalDeleteEvent from "../../components/ModalDeleteEvent/ModalDeleteEvent";
+import { connect } from "react-redux";
+import { eventActions } from "stores/actions";
 
-export class AdminEventsPage extends React.Component {
+
+class AdminEventsPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -54,8 +59,24 @@ export class AdminEventsPage extends React.Component {
       }
     };
   }
+  componentDidMount() {
+    const {getAll} =this.props;
+    if (getAll){
+      getAll();
+    }
+  }
 
   render() {
+    // const newEvents = [];
+    const{
+      events,
+      loading,
+      match: {
+        params: { eventId }
+      }
+    } = this.props;
+    // const item = events ? events.find(x => x.id === parseInt(eventId)) : null;
+    // console.log('events', events);
     return (
       <>
         <TopNavigation />
@@ -165,7 +186,11 @@ export class AdminEventsPage extends React.Component {
                         </tr>
                       </thead>
                       <tbody>
-                        {this.state.events.records.map((item, index) => {
+                        
+                        {loading && <tr>
+                      <td colSpan="5"><div><center>Loading events....</center></div></td>
+                        </tr>}
+{events && events.map((item, index) => {
                           return (
                             <tr key={index}>
                               <td>{item.id}</td>
@@ -178,7 +203,7 @@ export class AdminEventsPage extends React.Component {
                                 </Link>
                               </td>
                               <td>{item.description}</td>
-                              <td>{item.entryFee}</td>
+                              <td>{item.fee}</td>
                               <td className={"text-center"}>
                                 <Link
                                   to={"../listView/" + item.id}
@@ -207,3 +232,22 @@ export class AdminEventsPage extends React.Component {
     );
   }
 }
+
+const mapStateToProps = state => {
+  const { events, event, loading, newEvents } = state.events;
+  return { events, event, loading, newEvents};
+}
+
+
+const actionCreators = {
+  getAll: eventActions.getAllEvents,
+};
+
+
+const connectedRegisterPage = connect(
+  mapStateToProps,
+  actionCreators
+)(AdminEventsPage);
+
+export { connectedRegisterPage as AdminEventsPage };
+

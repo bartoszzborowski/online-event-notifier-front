@@ -3,8 +3,10 @@ import {ErrorMessage, Field, Formik} from "formik";
 import {TopNavigation} from "../../components/TopNavigation";
 import {EventListItem} from "../../components/EventListItem";
 import {Button} from "react-bootstrap";
+import { connect } from "react-redux";
+import { eventActions } from "stores/actions";
 
-export class ProfilePage extends React.Component {
+class ProfilePage extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -78,8 +80,22 @@ export class ProfilePage extends React.Component {
             ],
         }
     }
-
-    render() {
+    componentDidMount() {
+        const {getEvents} =this.props;
+        if (getEvents){
+          getEvents();
+        }
+      }
+    
+      render() {
+        // const newEvents = [];
+        const{
+          events,
+          loading,
+          match: {
+            params: { eventId }
+          }
+        } = this.props;
         return (
             <>
                 <TopNavigation/>
@@ -167,13 +183,15 @@ export class ProfilePage extends React.Component {
                                         </div>
                                         <div className={"col-sm-4"}>
                                             <h5>Events you attend</h5>
-                                            {this.state.attendingEvents.map((item, index) => {
+                                            {loading &&
+                      <div><center>Loading events....</center></div>}
+                                            {events && events.map((item, index) => {
                                                 return <EventListItem item={item} key={index}/>
                                             })}
                                         </div>
                                         <div className={"col-sm-4"}>
                                             <h5>Events you've created</h5>
-                                            {this.state.userEvents.map((item, index) => {
+                                            {events && events.map((item, index) => {
                                                 return <EventListItem item={item} key={index}/>
                                             })}
                                         </div>
@@ -188,3 +206,23 @@ export class ProfilePage extends React.Component {
     }
 }
 
+
+
+const mapStateToProps = state => {
+    const { events, event, loading } = state.events;
+    return { events, event, loading};
+  }
+  
+  const actionCreators = {
+    getEvents: eventActions.getEvents,
+  };
+  
+  
+  const connectedRegisterPage = connect(
+    mapStateToProps,
+    actionCreators
+  )(ProfilePage);
+  
+  export { connectedRegisterPage as ProfilePage };
+  
+  

@@ -3,10 +3,12 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faTrashAlt} from "@fortawesome/free-solid-svg-icons";
 import {Button, Modal} from "react-bootstrap";
 import {Formik} from 'formik';
+import { userActions } from "../../stores/actions";
+import { connect } from "react-redux";
 
-export function ModalDeleteUser(props) {
+const ModalDeleteUser = props => {
     const [show, setShow] = useState(false);
-
+    const { deleteAction } = props;
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
 
@@ -20,7 +22,8 @@ export function ModalDeleteUser(props) {
                     initialValues={{}}
                     onSubmit={(values, {setSubmitting}) => {
                         setTimeout(() => {
-                            alert(JSON.stringify(values, null, 2));
+                            deleteAction(props.user.id);
+                            // alert(JSON.stringify(values, null, 2));
                             setSubmitting(false);
                         }, 400);
                     }}>
@@ -50,3 +53,17 @@ export function ModalDeleteUser(props) {
         </>
     )
 }
+
+
+
+const mapStateToProps = state => {
+    const { error } = state.events || {};
+    return { error };
+  };
+  
+  const actionCreators = {
+    deleteAction: userActions.delete
+  };
+  
+  export default connect(mapStateToProps, actionCreators)(ModalDeleteUser);
+  

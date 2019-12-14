@@ -11,6 +11,7 @@ export const eventService = {
   delete: _delete
 };
 
+
 function attendToEvent(userId, eventId) {
   const MUTATION = gql`
     mutation($userId: Int, $eventId: Int) {
@@ -35,16 +36,29 @@ function attendToEvent(userId, eventId) {
 
 function getAll() {
   const QUERY = gql`
-    query {
-      users {
-        id
-        email
-        token
-      }
+  query {
+    events {
+       id
+      event_type
+      user_id
+      address
+      name
+      description
+      fee
+      event_date
     }
+  }
   `;
 
-  return getClient().query({ query: QUERY });
+  return getClient()
+  .query({ query: QUERY })
+  .then(result => {
+    const {
+      data: { events = {} }
+    } = result;
+
+    return events;
+  });
 }
 
 function create(event) {
