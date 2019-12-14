@@ -23,21 +23,6 @@ class ProfilePage extends React.Component {
       match: {
       params: { userId }
     }} = this.props;
-    console.log(user.id);
-    console.log(user.id);
-    console.log(user.id);
-    console.log(user.id);
-    console.log(user.id);
-    console.log(user.id);
-    console.log(user.id);
-    console.log(users);
-    console.log(users);
-    console.log(users);
-    console.log(users);
-    console.log(users);
-    console.log(users);
-    console.log(users);
-    console.log(users);
     return (
       <>
         <TopNavigation />
