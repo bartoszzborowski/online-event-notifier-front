@@ -1,5 +1,5 @@
 import React from 'react';
-import {GoogleApiWrapper, Map} from 'google-maps-react';
+import {GoogleApiWrapper, Map, Marker} from 'google-maps-react';
 
 export class MapContainer extends React.Component {
     render() {
@@ -7,11 +7,19 @@ export class MapContainer extends React.Component {
             <Map google={this.props.google}
                  zoom={15}
                  initialCenter={{
-                    lat: 52.227889,
-                    lng: 21.001778
+                    lat: 0,
+                    lng: 2
                 }}
             fullscreenControl={false}>
-
+                {this.props.events &&
+                this.props.events.map((marker, index) => {
+                    return (
+                        <Marker key={index}
+                            title={marker.name}
+                            name={marker.name}
+                            position={{lat: marker.lat, lng: marker.lng}} />
+                    )})
+                }
             </Map>
         );
     }

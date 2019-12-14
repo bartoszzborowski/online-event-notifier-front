@@ -32,7 +32,6 @@ class ListViewPage extends React.PureComponent {
         if (getByUser) {
             getByUser();
         }
-        console.log('a');
     }
 
     editEvent() {
@@ -122,10 +121,6 @@ class ListViewPage extends React.PureComponent {
                     : attendanceCounterItem
                     : attendanceCounterItem;
         }
-        console.log(eventId);
-        console.log("this.state", this.state);
-        console.log("userEvents", userEvents);
-        console.log("item", item);
         return (
             <div className="vh-100">
                 <Toast
@@ -235,7 +230,7 @@ class ListViewPage extends React.PureComponent {
                                             <div className={"mb-2"}>{item.fee}</div>
                                         </div>
                                         <div className={"col-12 col-md-6 map-row"}>
-                                            <MapContainer/>
+                                            <MapContainer events={[item]}/>
                                         </div>
                                     </div>
                                 </>
