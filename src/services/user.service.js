@@ -59,6 +59,8 @@ function login(username, password) {
         email
         token
         admin
+        name
+        surname
         events {
           id
           event_type

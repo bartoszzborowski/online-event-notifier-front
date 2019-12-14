@@ -15,7 +15,8 @@ class ProfilePage extends React.Component {
   }
 
   render() {
-    const { events, userEvents, loading } = this.props;
+    const { user, events, userEvents, loading } = this.props;
+    console.log(user);
     return (
       <>
         <TopNavigation />
@@ -30,8 +31,9 @@ class ProfilePage extends React.Component {
                       <h5>Account data</h5>
                       <Formik
                         initialValues={{
-                          email: "email@email.email",
-                          name: "",
+                          email: user.email,
+                          name: user.name,
+                          surname: user.surname,
                           password: "",
                           confirmPassword: ""
                         }}
@@ -40,6 +42,10 @@ class ProfilePage extends React.Component {
                           if (!values.name) {
                             errors.name =
                               "Name is either not provided or is invalid";
+                          }
+                          if (!values.surname) {
+                            errors.surname =
+                                "Surname is either not provided or is invalid";
                           }
                           return errors;
                         }}
@@ -87,6 +93,24 @@ class ProfilePage extends React.Component {
                                 name="name"
                                 component="div"
                                 className={"invalid-feedback"}
+                              />
+                            </div>
+                            <div className="form-group">
+                              <label htmlFor="name">Surname</label>
+                              <Field
+                                  type="text"
+                                  name="surname"
+                                  id={"surname"}
+                                  className={
+                                    "form-control " +
+                                    (errors.surname ? "is-invalid" : "")
+                                  }
+                                  placeholder="Enter surname"
+                              />
+                              <ErrorMessage
+                                  name="surname"
+                                  component="div"
+                                  className={"invalid-feedback"}
                               />
                             </div>
                             <div className="form-group">
@@ -174,11 +198,11 @@ class ProfilePage extends React.Component {
     );
   }
 }
-
 const mapStateToProps = state => {
+  const { user = null } = state.authentication || {};
   const { events, event, loading } = state.events;
   const { userEvents } = state.authentication;
-  return { events, event, loading, userEvents };
+  return { user, events, event, loading, userEvents };
 };
 
 const actionCreators = {
