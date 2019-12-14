@@ -5,18 +5,39 @@ import { EventListItem } from "../../components/EventListItem";
 import { Button } from "react-bootstrap";
 import { connect } from "react-redux";
 import { eventActions } from "stores/actions";
+import { userActions } from "../../stores/actions";
 
 class ProfilePage extends React.Component {
   componentDidMount() {
-    const { getEvents } = this.props;
+    const { getEvents,getAllUserConst } = this.props;
+    if (getAllUserConst){
+      getAllUserConst();
+  }
     if (getEvents) {
       getEvents();
     }
   }
 
   render() {
-    const { user, events, userEvents, loading } = this.props;
-    console.log(user);
+    const {updateUserConst, users, user, events, userEvents, loading,   
+      match: {
+      params: { userId }
+    }} = this.props;
+    console.log(user.id);
+    console.log(user.id);
+    console.log(user.id);
+    console.log(user.id);
+    console.log(user.id);
+    console.log(user.id);
+    console.log(user.id);
+    console.log(users);
+    console.log(users);
+    console.log(users);
+    console.log(users);
+    console.log(users);
+    console.log(users);
+    console.log(users);
+    console.log(users);
     return (
       <>
         <TopNavigation />
@@ -47,9 +68,15 @@ class ProfilePage extends React.Component {
                             errors.surname =
                                 "Surname is either not provided or is invalid";
                           }
+                          if (values.password !== values.confirmPassword) {
+                            errors.confirmPassword =
+                                "confirm password is not like password";
+                          }
                           return errors;
                         }}
                         onSubmit={(values, { setSubmitting }) => {
+                          values.id=user.id;
+                          updateUserConst(values);
                           setTimeout(() => {
                             alert(JSON.stringify(values, null, 2));
                             setSubmitting(false);
@@ -206,7 +233,8 @@ const mapStateToProps = state => {
 };
 
 const actionCreators = {
-  getEvents: eventActions.getEvents
+  getEvents: eventActions.getEvents,
+updateUserConst: userActions.updateUser
 };
 
 const connectedRegisterPage = connect(
