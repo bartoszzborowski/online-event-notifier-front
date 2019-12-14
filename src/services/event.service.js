@@ -1,5 +1,5 @@
 import gql from "graphql-tag";
-import { getClient } from "data/client/apolloClient";
+import client, { getClient } from "data/client/apolloClient";
 
 export const eventService = {
   create,
@@ -10,7 +10,6 @@ export const eventService = {
   getByUser,
   delete: _delete
 };
-
 
 function attendToEvent(userId, eventId) {
   const MUTATION = gql`
@@ -36,23 +35,22 @@ function attendToEvent(userId, eventId) {
 
 function getAll() {
   const QUERY = gql`
-  query {
-    events {
-       id
-      event_type
-      user_id
-      address
-      name
-      description
-      fee
-      event_date
+    query {
+      events {
+        id
+        event_type
+        user_id
+        address
+        name
+        description
+        fee
+        event_date
+        attendance_counter
+      }
     }
-  }
   `;
 
-  return getClient()
-  .query({ query: QUERY })
-  .then(result => {
+  return client.query({ query: QUERY }).then(result => {
     const {
       data: { events = {} }
     } = result;
@@ -138,7 +136,6 @@ function getByUser() {
         description
         fee
         event_date
-        city_id
         attendance_counter
       }
     }

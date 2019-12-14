@@ -6,30 +6,14 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "./ModalAddEvent.scss";
 import { ErrorMessage, Field, Formik } from "formik";
-import { eventActions, uiActions } from "stores/actions";
+import { eventActions } from "stores/actions";
 import { connect } from "react-redux";
 import { SelectField } from "../SelectField";
 
 const ModalAddEvent = props => {
-  const {
-    addEvent,
-    getLocations,
-    getEventTypes,
-    event,
-    error,
-    locations,
-    eventTypes
-  } = props;
+  const { addEvent, event, error, locations, eventTypes } = props;
 
-  if (!locations) {
-    // getLocations();
-  }
-
-  if (!eventTypes) {
-    // getEventTypes();
-  }
   const [show, setShow] = useState(false);
-
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
@@ -252,14 +236,11 @@ const ModalAddEvent = props => {
 
 const mapStateToProps = state => {
   const { event, error } = state.events || {};
-  const { locations, eventTypes } = state.ui;
-  return { event, error, locations, eventTypes };
+  return { event, error };
 };
 
 const actionCreators = {
-  addEvent: eventActions.addEvent,
-  getLocations: uiActions.getLocations,
-  getEventTypes: uiActions.getEventTypes
+  addEvent: eventActions.addEvent
 };
 
 export default connect(mapStateToProps, actionCreators)(ModalAddEvent);

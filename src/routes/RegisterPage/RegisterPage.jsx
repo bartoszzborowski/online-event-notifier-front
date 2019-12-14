@@ -1,8 +1,12 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { TopNavigation } from "../../components/TopNavigation";
-import { userActions } from "../../stores/actions";
+import { uiActions, userActions } from "../../stores/actions";
 import { connect } from "react-redux";
+import { ErrorMessage, Field } from "formik";
+import { SelectField } from "../../components/SelectField";
+import { Modal } from "react-bootstrap";
+import Select from "react-select";
 
 class RegisterPage extends React.Component {
   constructor(props) {
@@ -12,6 +16,7 @@ class RegisterPage extends React.Component {
       user: {
         firstName: "",
         lastName: "",
+        email: "",
         username: "",
         password: ""
       },
@@ -19,7 +24,13 @@ class RegisterPage extends React.Component {
     };
 
     this.handleChange = this.handleChange.bind(this);
+    this.handleCityId = this.handleCityId.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  componentDidMount() {
+    const { getLocations } = this.props;
+    getLocations();
   }
 
   handleChange(event) {
@@ -33,19 +44,43 @@ class RegisterPage extends React.Component {
     });
   }
 
+  handleCityId(city) {
+    const { value } = city;
+    this.setState(state => ({
+      user: {
+        ...state.user,
+        city_id: value
+      }
+    }));
+  }
+
   handleSubmit(event) {
     event.preventDefault();
 
     this.setState({ submitted: true });
     const { user } = this.state;
-    if (user.firstName && user.lastName && user.username && user.password) {
+
+    if (
+      user.firstName &&
+      user.lastName &&
+      user.password &&
+      user.email &&
+      user.city_id
+    ) {
       this.props.register(user);
     }
   }
 
   render() {
-    const { registering } = this.props;
+    const { registering, locations } = this.props;
     const { user, submitted } = this.state;
+
+    const locationsOptions =
+      locations &&
+      locations.map(item => {
+        return { value: item.slug, label: item.name };
+      });
+
     return (
       <>
         <TopNavigation />
@@ -97,21 +132,39 @@ class RegisterPage extends React.Component {
                     <div
                       className={
                         "form-group" +
-                        (submitted && !user.username ? " has-error" : "")
+                        (submitted && !user.email ? " has-error" : "")
                       }
                     >
-                      <label htmlFor="username">Username</label>
+                      <label htmlFor="lastName">Email</label>
                       <input
-                        type="text"
+                        type="email"
                         className="form-control"
-                        name="username"
-                        value={user.username}
+                        name="email"
+                        value={user.email}
                         onChange={this.handleChange}
                       />
-                      {submitted && !user.username && (
-                        <div className="help-block">Username is required</div>
+                      {submitted && !user.email && (
+                        <div className="help-block">Email is required</div>
                       )}
                     </div>
+                    {locationsOptions && (
+                      <div
+                        className={
+                          "form-group" +
+                          (submitted && !user.city_id ? " has-error" : "")
+                        }
+                      >
+                        <label htmlFor="lastName">Base City</label>
+                        <Select
+                          onChange={this.handleCityId}
+                          options={locationsOptions}
+                          name="city_id"
+                        />
+                        {submitted && !user.city_id && (
+                          <div className="help-block">City is required</div>
+                        )}
+                      </div>
+                    )}
                     <div
                       className={
                         "form-group" +
@@ -152,11 +205,13 @@ class RegisterPage extends React.Component {
 
 const mapStateToProps = state => {
   const { registering } = state.registration;
-  return { registering };
+  const { locations } = state.ui;
+  return { registering, locations };
 };
 
 const actionCreators = {
-  register: userActions.register
+  register: userActions.register,
+  getLocations: uiActions.getLocations
 };
 
 const connectedRegisterPage = connect(

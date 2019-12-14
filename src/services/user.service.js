@@ -23,7 +23,14 @@ function getByToken() {
         token
         events {
           id
+          event_type
+          user_id
+          address
           name
+          description
+          fee
+          event_date
+          attendance_counter
         }
       }
     }
@@ -35,8 +42,11 @@ function getByToken() {
       const {
         data: { userByToken = {} }
       } = result;
-      localStorage.removeItem("user");
-      localStorage.setItem("user", JSON.stringify(userByToken));
+      console.log("result", result);
+      if (userByToken.length > 1) {
+        localStorage.removeItem("user");
+        localStorage.setItem("user", JSON.stringify(userByToken));
+      }
       return userByToken;
     });
 }
@@ -51,7 +61,14 @@ function login(username, password) {
         admin
         events {
           id
+          event_type
+          user_id
+          address
           name
+          description
+          fee
+          event_date
+          attendance_counter
         }
       }
     }
@@ -122,43 +139,38 @@ function getAllUsers() {
 
 function getById(userId) {
   const QUERY = gql`
-  query($userId: Int) {
-    users(id: $userId)  {
-      id
-      email
-      name
-      surname
-      admin
+    query($userId: Int) {
+      users(id: $userId) {
+        id
+        email
+        name
+        surname
+        admin
+      }
     }
-  }
-`;
+  `;
 
-return getClient()
-  .query({ query: QUERY, variables: { id: userId } })
-  .then(result => {
-    const {
-      data: { users = {} }
-    } = result;
-    return users;
-  });
+  return getClient()
+    .query({ query: QUERY, variables: { id: userId } })
+    .then(result => {
+      const {
+        data: { users = {} }
+      } = result;
+      return users;
+    });
 }
 
 function register(user) {
-  const {
-    firstName,
-    lastName,
-    password,
-    username
-  } = user;
+  const { firstName, lastName, password, email, city_id } = user;
 
- 
   const enhanceUser = {
     name: firstName,
     surname: lastName,
-    email: username,
+    email: email,
     password,
+    base_city: city_id,
+    admin: false
   };
-
 
   const MUTATION = gql`
     mutation($input: UserInputType) {
@@ -169,30 +181,24 @@ function register(user) {
       }
     }
   `;
-  return getClient()
+  return client
     .mutate({ mutation: MUTATION, variables: { input: { ...enhanceUser } } })
     .then(result => {
-     
       const {
-        data: { user = {} }
+        data: { createUser = {} }
       } = result;
-     
-      return user;
+
+      return createUser;
     });
 }
 
 function update(users) {
-  const {
-    id,
-  name,
-  email,
-  admin,
-  } = users;
+  const { id, name, email, admin } = users;
   const enhanceUser = {
     id,
     name,
     email,
-    admin,
+    admin
   };
 
   const MUTATION = gql`
@@ -236,4 +242,3 @@ function _delete(id) {
       return id;
     });
 }
-

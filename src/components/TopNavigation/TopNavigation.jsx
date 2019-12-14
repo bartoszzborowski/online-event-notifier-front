@@ -15,7 +15,7 @@ import { Field, Formik } from "formik";
 import DatePicker from "react-datepicker";
 import ModalAddEvent from "../ModalAddEvent/ModalAddEvent";
 import { connect } from "react-redux";
-import { userActions } from "stores/actions";
+import { uiActions, userActions } from "stores/actions";
 
 class TopNavigation extends React.Component {
   constructor(props) {
@@ -25,8 +25,14 @@ class TopNavigation extends React.Component {
     };
   }
 
+  componentDidMount() {
+    const { getLocations, getTypes } = this.props;
+    getLocations();
+    getTypes();
+  }
+
   render() {
-    const { user, logout } = this.props;
+    const { user, logout, locations, eventTypes } = this.props;
     return (
       <>
         <Formik
@@ -87,7 +93,10 @@ class TopNavigation extends React.Component {
                     <Link to="../admin" className="btn btn-secondary">
                       <FontAwesomeIcon icon={faCrown} />
                     </Link>
-                    <ModalAddEvent />
+                    <ModalAddEvent
+                      locations={locations}
+                      eventTypes={eventTypes}
+                    />
                     <Link to="../profile" className="btn btn-secondary">
                       <FontAwesomeIcon icon={faUserAlt} />
                     </Link>
@@ -185,11 +194,14 @@ class TopNavigation extends React.Component {
 
 const mapStateToProps = state => {
   const { user = null } = state.authentication || {};
-  return { user };
+  const { locations, eventTypes } = state.ui;
+  return { user, locations, eventTypes };
 };
 
 const actionCreators = {
-  logout: userActions.logout
+  logout: userActions.logout,
+  getLocations: uiActions.getLocations,
+  getTypes: uiActions.getEventTypes
 };
 
 const connectedLoginPage = connect(

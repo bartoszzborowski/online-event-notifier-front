@@ -18,7 +18,8 @@ class ListViewPage extends React.PureComponent {
     super(props);
     this.editing = false;
     this.state = {
-      showToast: false
+      showToast: false,
+      attendanceCounter: []
     };
     this.editEvent = this.editEvent.bind(this);
     this.cancelEditEvent = this.cancelEditEvent.bind(this);
@@ -29,6 +30,7 @@ class ListViewPage extends React.PureComponent {
     const { getByUser, getLocations, getEventTypes, updateUser } = this.props;
     getLocations();
     getEventTypes();
+    updateUser();
     if (getByUser) {
       getByUser();
     }
@@ -50,11 +52,25 @@ class ListViewPage extends React.PureComponent {
     });
   }
 
-  attendToEvent(userId, eventId) {
+  attendToEvent(userId, eventId, counter) {
     const { attendToEvent, updateUser } = this.props;
 
     attendToEvent(userId, eventId);
     updateUser();
+
+    this.setState(
+      state => ({
+        ...state,
+        attendanceCounter: {
+          [eventId]: state.attendanceCounter[eventId]
+            ? ++state.attendanceCounter[eventId]
+            : ++counter
+        }
+      }),
+      () => {
+        this.forceUpdate();
+      }
+    );
   }
 
   render() {
@@ -91,7 +107,21 @@ class ListViewPage extends React.PureComponent {
         return event.id === item.id;
       }).length;
     }
+    let attendanceCounter = 0;
 
+    if (item) {
+      const { attendance_counter: attendanceCounterItem } = item;
+      const { attendanceCounter: attendanceCounterState } = this.state;
+      attendanceCounter =
+        attendanceCounterState[item.id] !== undefined
+          ? attendanceCounterState[item.id] > attendanceCounterItem
+            ? attendanceCounterState[item.id]
+            : attendanceCounterItem
+          : attendanceCounterItem;
+    }
+    console.log("this.state", this.state);
+    console.log("userEvents", userEvents);
+    console.log("item", item);
     return (
       <div className="vh-100">
         <Toast
@@ -120,7 +150,8 @@ class ListViewPage extends React.PureComponent {
           <div className="row">
             <div className="col-sm-4 event-list">
               {loading && <div>Loading events....</div>}
-              {events &&
+              {!loading &&
+                events &&
                 events.map((item, index) => {
                   return (
                     <EventListItem
@@ -160,16 +191,21 @@ class ListViewPage extends React.PureComponent {
                       <div className={"label"}>Attendance counter:</div>
                       <div className={"attendance-counter mb-2"}>
                         <div className={"value"}>
-                          <span>{item.attendance_counter}</span>
+                          <span>{attendanceCounter}</span>
                         </div>
                         <div className={"attend-button"}>
-                          {/*@TODO disable if already attending*/}
                           <button
-                            disabled={isAttendance}
+                            disabled={isAttendance || isOwner}
                             className={
                               "btn btn-light " + (user ? "disabled" : "")
                             }
-                            onClick={() => this.attendToEvent(userId, item.id)}
+                            onClick={() =>
+                              this.attendToEvent(
+                                userId,
+                                item.id,
+                                attendanceCounter
+                              )
+                            }
                           >
                             Attend!
                           </button>
@@ -424,12 +460,12 @@ const mapStateToProps = state => {
 };
 
 const actionCreators = {
-  getByUser: eventActions.getEvents,
+  getByUser: eventActions.getAllEvents,
   updateEvent: eventActions.updateEvent,
   attendToEvent: eventActions.attendToEvent,
   getLocations: uiActions.getLocations,
   getEventTypes: uiActions.getEventTypes,
-  updateUser: userActions.updateUser
+  updateUser: userActions.refreshUser
 };
 
 const connectedRegisterPage = connect(

@@ -6,6 +6,7 @@ export class EventListItem extends React.Component {
   render() {
     const item = this.props.item;
     const selected = this.props.selected;
+    console.log("locaItem", item);
     return (
       item && (
         <div className={"element " + (selected ? "selected" : "")}>

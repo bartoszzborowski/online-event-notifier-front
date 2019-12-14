@@ -1,5 +1,5 @@
 import gql from "graphql-tag";
-import { getClient } from "data/client/apolloClient";
+import { client } from "data/client/apolloClient";
 
 export const uiService = {
   getEventTypes,
@@ -17,15 +17,13 @@ function getLocations() {
     }
   `;
 
-  return getClient()
-    .query({ query: QUERY })
-    .then(result => {
-      const {
-        data: { locations = {} }
-      } = result;
+  return client.query({ query: QUERY }).then(result => {
+    const {
+      data: { locations = {} }
+    } = result;
 
-      return locations;
-    });
+    return locations;
+  });
 }
 
 function getEventTypes() {
@@ -38,12 +36,10 @@ function getEventTypes() {
     }
   `;
 
-  return getClient()
-    .query({ query: QUERY })
-    .then(result => {
-      const {
-        data: { eventType = {} }
-      } = result;
-      return eventType;
-    });
+  return client.query({ query: QUERY }).then(result => {
+    const {
+      data: { eventType = {} }
+    } = result;
+    return eventType;
+  });
 }
