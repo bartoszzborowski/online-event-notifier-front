@@ -1,4 +1,5 @@
 import gql from "graphql-tag";
+import head from "lodash/head";
 import { client, getClient } from "data/client/apolloClient";
 
 export const userService = {
@@ -141,8 +142,8 @@ function getAllUsers() {
 
 function getById(userId) {
   const QUERY = gql`
-    query($userId: Int) {
-      users(id: $userId) {
+    query($id: Int) {
+      users(id: $id) {
         id
         email
         name
@@ -158,7 +159,7 @@ function getById(userId) {
       const {
         data: { users = {} }
       } = result;
-      return users;
+      return head(users);
     });
 }
 
@@ -195,7 +196,7 @@ function register(user) {
 }
 
 function update(users) {
-  const { id, name, email, admin,surname,password } = users;
+  const { id, name, email, admin, surname, password } = users;
   const enhanceUser = {
     id,
     name,
