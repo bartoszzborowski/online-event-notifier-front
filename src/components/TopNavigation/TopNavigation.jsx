@@ -15,7 +15,9 @@ import { Field, Formik } from "formik";
 import DatePicker from "react-datepicker";
 import ModalAddEvent from "../ModalAddEvent/ModalAddEvent";
 import { connect } from "react-redux";
-import { uiActions, userActions } from "stores/actions";
+import { eventActions, uiActions, userActions } from "stores/actions";
+import { SelectField } from "../SelectField";
+import { history } from "../../helpers";
 
 class TopNavigation extends React.Component {
   constructor(props) {
@@ -32,22 +34,35 @@ class TopNavigation extends React.Component {
   }
 
   render() {
-    const { user, logout, locations, eventTypes } = this.props;
+    const { user, logout, locations, eventTypes, searchEvent } = this.props;
+
+    const locationsOptions =
+      locations &&
+      locations.map(item => {
+        return { value: item.slug, label: item.name };
+      });
+    const typesOptions =
+      eventTypes &&
+      eventTypes.map(item => {
+        return { value: item.name, label: item.name };
+      });
+
     return (
       <>
         <Formik
           initialValues={{
             name: "",
             date: "",
-            location: "",
-            type: "",
-            entryFee: ""
+            city_id: "",
+            event_type: "",
+            entry_fee: ""
           }}
           onSubmit={(values, { setSubmitting }) => {
             this.setState({ filtersOpened: false });
+            searchEvent(values);
+            setSubmitting(false);
             setTimeout(() => {
-              alert(JSON.stringify(values, null, 2));
-              setSubmitting(false);
+              history.push("/listView");
             }, 400);
           }}
         >
@@ -123,11 +138,14 @@ class TopNavigation extends React.Component {
                     <div className="form-group">
                       <label htmlFor="id">Type</label>
                       <Field
-                        type="text"
-                        name="type"
-                        id={"type"}
-                        className={"form-control form-control-sm"}
-                        placeholder="Enter type"
+                        name="event_type"
+                        component={SelectField}
+                        options={typesOptions}
+                        field={{
+                          name: "event_type",
+                          value: values.event_type
+                        }}
+                        className={"form-control "}
                       />
                     </div>
                   </div>
@@ -135,11 +153,14 @@ class TopNavigation extends React.Component {
                     <div className="form-group">
                       <label htmlFor="id">Location</label>
                       <Field
-                        type="text"
-                        name="location"
-                        id={"location"}
-                        className={"form-control form-control-sm"}
-                        placeholder="Enter location"
+                        name="city_id"
+                        component={SelectField}
+                        options={locationsOptions}
+                        field={{
+                          name: "city_id",
+                          value: values.city_id
+                        }}
+                        className={"form-control "}
                       />
                     </div>
                   </div>
@@ -164,8 +185,8 @@ class TopNavigation extends React.Component {
                       <label htmlFor="id">Entry fee</label>
                       <Field
                         type="text"
-                        name="entryFee"
-                        id={"entryFee"}
+                        name="entry_fee"
+                        id={"entry_fee"}
                         className={"form-control form-control-sm"}
                         placeholder="Enter entry fee"
                       />
@@ -201,7 +222,8 @@ const mapStateToProps = state => {
 const actionCreators = {
   logout: userActions.logout,
   getLocations: uiActions.getLocations,
-  getTypes: uiActions.getEventTypes
+  getTypes: uiActions.getEventTypes,
+  searchEvent: eventActions.searchEvent
 };
 
 const connectedLoginPage = connect(

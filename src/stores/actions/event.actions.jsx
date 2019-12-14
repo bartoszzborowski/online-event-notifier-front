@@ -8,8 +8,36 @@ export const eventActions = {
   getEvents,
   updateEvent,
   deleteEvent,
-  attendToEvent
+  attendToEvent,
+  searchEvent
 };
+
+function searchEvent(search_params) {
+  return dispatch => {
+    dispatch(request());
+
+    eventService.search(search_params).then(
+      events => {
+        dispatch(success(events));
+      },
+      error => {
+        dispatch(failure(error));
+      }
+    );
+  };
+
+  function request() {
+    return { type: eventConstants.EVENT_SEARCH_REQUEST };
+  }
+
+  function success(events) {
+    return { type: eventConstants.EVENT_SEARCH_SUCCESS, events };
+  }
+
+  function failure(error) {
+    return { type: eventConstants.EVENT_SEARCH_FAILURE, error };
+  }
+}
 
 function attendToEvent(user_id, event_id) {
   return dispatch => {
@@ -93,7 +121,7 @@ function updateEvent(event) {
 function getEvents() {
   return dispatch => {
     dispatch(request());
-   
+
     eventService.getByUser().then(
       events => dispatch(success(events)),
       error => dispatch(failure(error))
@@ -155,7 +183,6 @@ function deleteEvent(id) {
     return { type: eventConstants.EVENT_DELETE_FAILURE, id, error };
   }
 }
-
 
 function getAllEvents() {
   return dispatch => {

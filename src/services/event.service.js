@@ -8,8 +8,49 @@ export const eventService = {
   getById,
   update,
   getByUser,
+  search,
   delete: _delete
 };
+
+function search(parameters) {
+  const QUERY = gql`
+    query(
+      $name: String
+      $date: String
+      $city_id: EnumCityTypesType
+      $event_type: EnumEventTypesType
+      $entry_fee: Float
+    ) {
+      searchEvents(
+        name: $name
+        date: $date
+        city_id: $city_id
+        event_type: $event_type
+        entry_fee: $entry_fee
+      ) {
+        id
+        event_type
+        user_id
+        address
+        name
+        description
+        fee
+        event_date
+        attendance_counter
+      }
+    }
+  `;
+
+  return client
+    .query({ query: QUERY, variables: { ...parameters } })
+    .then(result => {
+      const {
+        data: { searchEvents = {} }
+      } = result;
+
+      return searchEvents;
+    });
+}
 
 function attendToEvent(userId, eventId) {
   const MUTATION = gql`

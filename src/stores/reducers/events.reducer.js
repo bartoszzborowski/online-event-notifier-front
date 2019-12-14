@@ -5,12 +5,14 @@ export function events(
     loading: false,
     error: null,
     events: null,
+    searchedEvents: null,
     event: null,
     attend: false
   },
   action
 ) {
   switch (action.type) {
+    case eventConstants.EVENT_SEARCH_REQUEST:
     case eventConstants.EVENT_ATTEND_REQUEST:
     case eventConstants.EVENT_UPDATE_REQUEST:
     case eventConstants.EVENT_GET_REQUEST:
@@ -24,6 +26,12 @@ export function events(
         ...state,
         loading: false,
         attend: true
+      };
+    case eventConstants.EVENT_SEARCH_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        searchedEvents: action.events
       };
     case eventConstants.EVENT_GET_SUCCESS:
       return {
@@ -41,6 +49,7 @@ export function events(
         ...state,
         event: action.event
       };
+    case eventConstants.EVENT_SEARCH_FAILURE:
     case eventConstants.EVENT_ATTEND_FAILURE:
     case eventConstants.EVENT_UPDATE_FAILURE:
     case eventConstants.EVENT_CREATE_FAILURE:

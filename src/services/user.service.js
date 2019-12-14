@@ -229,7 +229,7 @@ function update(users) {
 function _delete(id) {
   const MUTATION = gql`
     mutation($users_id: Int) {
-      deleteEvents(users_id: $users_id)
+      deleteUsers(users_id: $users_id)
     }
   `;
 

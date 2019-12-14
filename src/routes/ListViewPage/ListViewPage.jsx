@@ -76,16 +76,20 @@ class ListViewPage extends React.PureComponent {
   render() {
     const {
       user,
-      events,
+      events: allEvents,
       locations,
       eventTypes,
       updateEvent,
       loading,
       userEvents,
+      searchedEvents,
       match: {
         params: { eventId }
       }
     } = this.props;
+
+    const events = searchedEvents ? searchedEvents : allEvents;
+
     const { showToast } = this.state;
     const { id: userId = null } = user;
     const locationsOptions =
@@ -222,7 +226,7 @@ class ListViewPage extends React.PureComponent {
                       </div>
 
                       <div className={"label"}>Category</div>
-                      <div className={"mb-2"}>???</div>
+                      <div className={"mb-2"}>{item.event_type}</div>
 
                       <div className={"label"}>Entry fee:</div>
                       <div className={"mb-2"}>{item.fee}</div>
@@ -453,10 +457,18 @@ class ListViewPage extends React.PureComponent {
 }
 
 const mapStateToProps = state => {
-  const { events, loading } = state.events;
+  const { events, loading, searchedEvents } = state.events;
   const { user, userEvents } = state.authentication;
   const { locations, eventTypes } = state.ui;
-  return { events, locations, eventTypes, loading, user, userEvents };
+  return {
+    events,
+    locations,
+    eventTypes,
+    loading,
+    user,
+    userEvents,
+    searchedEvents
+  };
 };
 
 const actionCreators = {

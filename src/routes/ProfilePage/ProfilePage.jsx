@@ -16,7 +16,6 @@ class ProfilePage extends React.Component {
 
   render() {
     const { events, userEvents, loading } = this.props;
-    console.log("events", events);
     return (
       <>
         <TopNavigation />

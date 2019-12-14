@@ -3,5 +3,6 @@ import generateCrudConstants, {
 } from "helpers/crudGenerator";
 const basicCrud = generateCrudConstants("EVENT");
 const attendConst = generateSingleRequest("EVENT", "ATTEND");
-const crud = { ...basicCrud, ...attendConst };
+const searchConst = generateSingleRequest("EVENT", "SEARCH");
+const crud = { ...basicCrud, ...attendConst, ...searchConst };
 export { crud as eventConstants };
