@@ -105,9 +105,10 @@ class TopNavigation extends React.Component {
               <div className="navigation-group top-right">
                 {user && (
                   <div className="btn-group">
+                    {user.admin &&
                     <Link to="../admin" className="btn btn-secondary">
                       <FontAwesomeIcon icon={faCrown} />
-                    </Link>
+                    </Link>}
                     <ModalAddEvent
                       locations={locations}
                       eventTypes={eventTypes}
