@@ -252,7 +252,9 @@ class ListViewPage extends React.PureComponent {
                                             address: item.address || "",
                                             type: item.event_type || "",
                                             description: item.description || "",
-                                            entryFee: item.fee || 0.0
+                                            entryFee: item.fee || 0.0,
+                                            latitude: item.lat || 0.0,
+                                            longitude: item.lng || 0.0,
                                         }}
                                         validate={values => {
                                             const errors = {};
@@ -356,6 +358,44 @@ class ListViewPage extends React.PureComponent {
                                                         className={"invalid-feedback"}
                                                     />
                                                 </div>
+                                                <div className={"form-row"}>
+                                    <div className={"col-sm-6"}>
+                                        <div className="form-group">
+                                            <label htmlFor="formName">Latitude</label>
+                                            <Field
+                                                type="text"
+                                                name="latitude"
+                                                id={"formLatitude"}
+                                                className={
+                                                    "form-control " + (errors.latitude ? "is-invalid" : "")
+                                                }
+                                            />
+                                            <ErrorMessage
+                                                name="latitude"
+                                                component="div"
+                                                className={"invalid-feedback"}
+                                            />
+                                        </div>
+                                    </div>
+                                    <div className={"col-sm-6"}>
+                                        <div className="form-group">
+                                            <label htmlFor="formName">Longitude</label>
+                                            <Field
+                                                type="text"
+                                                name="longitude"
+                                                id={"formLongitude"}
+                                                className={
+                                                    "form-control " + (errors.longitude ? "is-invalid" : "")
+                                                }
+                                            />
+                                            <ErrorMessage
+                                                name="longitude"
+                                                component="div"
+                                                className={"invalid-feedback"}
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
                                                 <div className="form-group">
                                                     <label htmlFor="formLocation">Location</label>
                                                     <Field
