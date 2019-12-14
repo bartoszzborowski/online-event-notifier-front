@@ -7,12 +7,37 @@ export const userActions = {
   logout,
   register,
   getAll,
+  getById,
   getUserAction,
   getAllUsersAction,
   updateUser,
   refreshUser,
   delete: _delete
 };
+
+function getById(userId) {
+  return dispatch => {
+    dispatch(request());
+    userService.getById(userId).then(
+      user => {
+        dispatch(success(user));
+      },
+      error => {
+        dispatch(failure(error.toString()));
+      }
+    );
+  };
+
+  function request() {
+    return { type: userConstants.GET_BY_ID_REQUEST };
+  }
+  function success(user) {
+    return { type: userConstants.GET_BY_ID_SUCCESS, user };
+  }
+  function failure(error) {
+    return { type: userConstants.GET_BY_ID_FAILURE, error };
+  }
+}
 
 function refreshUser() {
   return dispatch => {

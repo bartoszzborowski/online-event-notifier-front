@@ -100,6 +100,7 @@ function updateEvent(event) {
         dispatch(success(event));
       },
       error => {
+        console.log("error", error);
         dispatch(failure(error.toString()));
       }
     );

@@ -219,7 +219,7 @@ function update(users) {
       const {
         data: { users = {} }
       } = result;
-
+      console.log("result", result);
       return users;
     });
 }
