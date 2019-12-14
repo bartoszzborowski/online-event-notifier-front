@@ -22,11 +22,11 @@ const ModalAddEvent = props => {
   } = props;
 
   if (!locations) {
-    getLocations();
+    // getLocations();
   }
 
   if (!eventTypes) {
-    getEventTypes();
+    // getEventTypes();
   }
   const [show, setShow] = useState(false);
 

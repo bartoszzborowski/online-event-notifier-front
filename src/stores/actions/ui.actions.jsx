@@ -8,7 +8,7 @@ export const uiActions = {
 
 function getLocations() {
   return dispatch => {
-    dispatch(request);
+    dispatch(request());
 
     uiService.getLocations().then(
       items => dispatch(success(items)),
@@ -29,7 +29,7 @@ function getLocations() {
 
 function getEventTypes() {
   return dispatch => {
-    dispatch(request);
+    dispatch(request());
 
     uiService.getEventTypes().then(
       items => dispatch(success(items)),

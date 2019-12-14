@@ -7,21 +7,27 @@ export function ui(
   switch (action.type) {
     case uiConstants.UI_GET_LOCATIONS_REQUEST:
     case uiConstants.UI_GET_TYPES_REQUEST:
-      state.loading = true;
-      break;
+      return {
+        ...state,
+        loading: true
+      };
     case uiConstants.UI_GET_LOCATIONS_SUCCESS:
-      state.locations = action.items;
-      break;
+      return {
+        ...state,
+        locations: action.items
+      };
     case uiConstants.UI_GET_TYPES_SUCCESS:
-      state.eventTypes = action.items;
-      break;
+      return {
+        ...state,
+        eventTypes: action.items
+      };
     case uiConstants.UI_GET_LOCATIONS_FAILURE:
     case uiConstants.UI_GET_TYPES_FAILURE:
-      state.error = action.error;
-      break;
+      return {
+        ...state,
+        error: action.error
+      };
     default:
-      break;
+      return state;
   }
-
-  return state;
 }

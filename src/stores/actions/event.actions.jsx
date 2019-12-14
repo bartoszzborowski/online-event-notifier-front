@@ -6,8 +6,36 @@ export const eventActions = {
   addEvent,
   getEvents,
   updateEvent,
-  deleteEvent
+  deleteEvent,
+  attendToEvent
 };
+
+function attendToEvent(user_id, event_id) {
+  return dispatch => {
+    dispatch(request());
+
+    eventService.attendToEvent(user_id, event_id).then(
+      attendToEvent => {
+        dispatch(success(attendToEvent));
+      },
+      error => {
+        dispatch(failure(error));
+      }
+    );
+  };
+
+  function request() {
+    return { type: eventConstants.EVENT_ATTEND_REQUEST };
+  }
+
+  function success(attendToEvent) {
+    return { type: eventConstants.EVENT_ATTEND_SUCCESS, attendToEvent };
+  }
+
+  function failure(error) {
+    return { type: eventConstants.EVENT_ATTEND_FAILURE, error };
+  }
+}
 
 function addEvent(event) {
   return dispatch => {
@@ -25,9 +53,11 @@ function addEvent(event) {
   function request() {
     return { type: eventConstants.EVENT_CREATE_REQUEST };
   }
+
   function success(event) {
     return { type: eventConstants.EVENT_CREATE_SUCCESS, event };
   }
+
   function failure(error) {
     return { type: eventConstants.EVENT_CREATE_FAILURE, error };
   }
@@ -49,9 +79,11 @@ function updateEvent(event) {
   function request() {
     return { type: eventConstants.EVENT_UPDATE_REQUEST };
   }
+
   function success(event) {
     return { type: eventConstants.EVENT_UPDATE_SUCCESS, event };
   }
+
   function failure(error) {
     return { type: eventConstants.EVENT_UPDATE_FAILURE, error };
   }
@@ -70,9 +102,11 @@ function getEvents() {
   function request() {
     return { type: eventConstants.EVENT_GET_REQUEST };
   }
+
   function success(events) {
     return { type: eventConstants.EVENT_GET_SUCCESS, events };
   }
+
   function failure(error) {
     return { type: eventConstants.EVENT_GET_FAILURE, error };
   }
@@ -111,9 +145,11 @@ function deleteEvent(id) {
   function request(id) {
     return { type: eventConstants.EVENT_DELETE_REQUEST, id };
   }
+
   function success(id) {
     return { type: eventConstants.EVENT_DELETE_SUCCESS, id };
   }
+
   function failure(id, error) {
     return { type: eventConstants.EVENT_DELETE_FAILURE, id, error };
   }

@@ -1,15 +1,29 @@
 import { eventConstants } from "stores/constants";
 
 export function events(
-  state = { loading: false, error: null, events: null, event: null },
+  state = {
+    loading: false,
+    error: null,
+    events: null,
+    event: null,
+    attend: false
+  },
   action
 ) {
   switch (action.type) {
+    case eventConstants.EVENT_ATTEND_REQUEST:
     case eventConstants.EVENT_UPDATE_REQUEST:
     case eventConstants.EVENT_GET_REQUEST:
     case eventConstants.EVENT_CREATE_REQUEST:
       return {
+        ...state,
         loading: true
+      };
+    case eventConstants.EVENT_ATTEND_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        attend: true
       };
     case eventConstants.EVENT_GET_SUCCESS:
       return {
@@ -19,12 +33,15 @@ export function events(
       };
     case eventConstants.EVENT_CREATE_SUCCESS:
       return {
+        ...state,
         event: action.events
       };
     case eventConstants.EVENT_UPDATE_SUCCESS:
       return {
+        ...state,
         event: action.event
       };
+    case eventConstants.EVENT_ATTEND_FAILURE:
     case eventConstants.EVENT_UPDATE_FAILURE:
     case eventConstants.EVENT_CREATE_FAILURE:
     case eventConstants.EVENT_GET_FAILURE:
@@ -43,6 +60,7 @@ export function events(
     case eventConstants.EVENT_DELETE_SUCCESS:
       // remove deleted user from state
       return {
+        ...state,
         events: state.events.filter(event => event.id !== action.id)
       };
     case eventConstants.EVENT_DELETE_FAILURE:

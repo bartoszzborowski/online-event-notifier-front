@@ -6,27 +6,19 @@ import { EventListItem } from "../../components/EventListItem/EventListItem";
 import DatePicker from "react-datepicker";
 import { ErrorMessage, Field, Formik } from "formik";
 import ModalDeleteEvent from "../../components/ModalDeleteEvent/ModalDeleteEvent";
-import { eventActions } from "stores/actions";
+import { eventActions, userActions } from "stores/actions";
 import { uiActions } from "stores/actions";
 import { connect } from "react-redux";
 import { SelectField } from "../../components/SelectField";
 import Toast from "react-bootstrap/Toast";
+import head from "lodash/head";
 
 class ListViewPage extends React.PureComponent {
   constructor(props) {
     super(props);
     this.editing = false;
     this.state = {
-      showToast: false,
-      event: {
-        id: 1,
-        name: "Some very very very very very very long name",
-        description:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut sem elit, pretium ut imperdiet vel, semper vestibulum quam. Phasellus rhoncus dolor libero, non sollicitudin elit feugiat id. Aliquam orci metus, bibendum et dui in, porttitor convallis velit.",
-        date: "2019-11-27T16:44:16+0000",
-        location: "???",
-        entryFee: 13.33
-      }
+      showToast: false
     };
     this.editEvent = this.editEvent.bind(this);
     this.cancelEditEvent = this.cancelEditEvent.bind(this);
@@ -34,7 +26,7 @@ class ListViewPage extends React.PureComponent {
   }
 
   componentDidMount() {
-    const { getByUser, getLocations, getEventTypes } = this.props;
+    const { getByUser, getLocations, getEventTypes, updateUser } = this.props;
     getLocations();
     getEventTypes();
     if (getByUser) {
@@ -58,20 +50,28 @@ class ListViewPage extends React.PureComponent {
     });
   }
 
+  attendToEvent(userId, eventId) {
+    const { attendToEvent, updateUser } = this.props;
+
+    attendToEvent(userId, eventId);
+    updateUser();
+  }
+
   render() {
     const {
       user,
-      event,
       events,
       locations,
       eventTypes,
       updateEvent,
       loading,
+      userEvents,
       match: {
         params: { eventId }
       }
     } = this.props;
     const { showToast } = this.state;
+    const { id: userId = null } = user;
     const locationsOptions =
       locations &&
       locations.map(item => {
@@ -83,6 +83,15 @@ class ListViewPage extends React.PureComponent {
         return { value: item.name, label: item.name };
       });
     const item = events ? events.find(x => x.id === parseInt(eventId)) : null;
+    const isOwner = item && userId === item.user_id;
+
+    let isAttendance = false;
+    if (userEvents && item) {
+      isAttendance = userEvents.filter(event => {
+        return event.id === item.id;
+      }).length;
+    }
+
     return (
       <div className="vh-100">
         <Toast
@@ -134,31 +143,33 @@ class ListViewPage extends React.PureComponent {
                 <>
                   <div className={"form-row"}>
                     <div className={"col-12 col-md-6"}>
-                      {/*@TODO hide if not an admin nor the event owner*/}
-                      <div className={"options " + (false ? "d-none" : "")}>
-                        <span>Options: </span>
-                        <span
-                          className={"text-warning"}
-                          onClick={this.editEvent}
-                        >
-                          Edit
-                        </span>{" "}
-                        -
-                        <ModalDeleteEvent event={item} />
-                      </div>
-
+                      {isOwner && (
+                        <div className={"options " + (false ? "d-none" : "")}>
+                          <span>Options: </span>
+                          <span
+                            className={"text-warning"}
+                            onClick={this.editEvent}
+                          >
+                            Edit
+                          </span>{" "}
+                          -
+                          <ModalDeleteEvent event={item} />
+                        </div>
+                      )}
                       <h4>{item.name}</h4>
                       <div className={"label"}>Attendance counter:</div>
                       <div className={"attendance-counter mb-2"}>
                         <div className={"value"}>
-                          <span>22222222222</span>
+                          <span>{item.attendance_counter}</span>
                         </div>
                         <div className={"attend-button"}>
                           {/*@TODO disable if already attending*/}
                           <button
+                            disabled={isAttendance}
                             className={
                               "btn btn-light " + (user ? "disabled" : "")
                             }
+                            onClick={() => this.attendToEvent(userId, item.id)}
                           >
                             Attend!
                           </button>
@@ -384,8 +395,6 @@ class ListViewPage extends React.PureComponent {
                           >
                             Cancel
                           </button>
-                          {/*@TODO the submit cause crash due to too many setStates, but I dunno how
-                                                probably refactor here for the backend will resolve the problem*/}
                           <button
                             type="submit"
                             className={"btn btn-warning"}
@@ -408,16 +417,19 @@ class ListViewPage extends React.PureComponent {
 }
 
 const mapStateToProps = state => {
-  const { events, event, loading } = state.events;
+  const { events, loading } = state.events;
+  const { user, userEvents } = state.authentication;
   const { locations, eventTypes } = state.ui;
-  return { events, locations, eventTypes, event, loading };
+  return { events, locations, eventTypes, loading, user, userEvents };
 };
 
 const actionCreators = {
   getByUser: eventActions.getEvents,
   updateEvent: eventActions.updateEvent,
+  attendToEvent: eventActions.attendToEvent,
   getLocations: uiActions.getLocations,
-  getEventTypes: uiActions.getEventTypes
+  getEventTypes: uiActions.getEventTypes,
+  updateUser: userActions.updateUser
 };
 
 const connectedRegisterPage = connect(

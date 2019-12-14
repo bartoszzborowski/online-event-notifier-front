@@ -4,11 +4,34 @@ import { getClient } from "data/client/apolloClient";
 export const eventService = {
   create,
   getAll,
+  attendToEvent,
   getById,
   update,
   getByUser,
   delete: _delete
 };
+
+function attendToEvent(userId, eventId) {
+  const MUTATION = gql`
+    mutation($userId: Int, $eventId: Int) {
+      attendToEvent(event_id: $eventId, user_id: $userId) {
+        id
+        user_id
+        event_id
+      }
+    }
+  `;
+
+  return getClient()
+    .mutate({ mutation: MUTATION, variables: { userId, eventId } })
+    .then(result => {
+      const {
+        data: { attendToEvent = {} }
+      } = result;
+
+      return attendToEvent;
+    });
+}
 
 function getAll() {
   const QUERY = gql`
@@ -102,6 +125,7 @@ function getByUser() {
         fee
         event_date
         city_id
+        attendance_counter
       }
     }
   `;

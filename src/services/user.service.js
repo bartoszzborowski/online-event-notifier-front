@@ -8,8 +8,37 @@ export const userService = {
   getAll,
   getById,
   update,
+  getByToken,
   delete: _delete
 };
+
+function getByToken() {
+  const QUERY = gql`
+    query {
+      userByToken {
+        id
+        email
+        admin
+        token
+        events {
+          id
+          name
+        }
+      }
+    }
+  `;
+
+  return getClient()
+    .query({ query: QUERY })
+    .then(result => {
+      const {
+        data: { userByToken = {} }
+      } = result;
+      localStorage.removeItem("user");
+      localStorage.setItem("user", JSON.stringify(userByToken));
+      return userByToken;
+    });
+}
 
 function login(username, password) {
   const MUTATION = gql`
@@ -19,6 +48,10 @@ function login(username, password) {
         email
         token
         admin
+        events {
+          id
+          name
+        }
       }
     }
   `;
@@ -49,6 +82,10 @@ function getAll() {
         id
         email
         token
+        events {
+          id
+          name
+        }
       }
     }
   `;
