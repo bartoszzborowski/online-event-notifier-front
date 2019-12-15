@@ -11,10 +11,13 @@ body {
 }
 
 .event-details {
-  padding-top: 4rem;
   height: 100vh;
   overflow-y: auto;
   position: absolute;
+
+  .padding-top-4rem {
+    padding-top: 4rem;
+  }
 
   .options {
     padding: 0.3rem;
@@ -54,6 +57,11 @@ body {
 
   .map-row {
     min-height: 50vh;
+  }
+
+  .list-icon {
+    margin-top: -4rem;
+    font-size: 12rem;
   }
 
   @media (max-width: 576px) {

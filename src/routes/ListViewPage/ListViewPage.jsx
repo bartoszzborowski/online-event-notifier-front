@@ -10,6 +10,10 @@ import {eventActions, uiActions, userActions} from "stores/actions";
 import {connect} from "react-redux";
 import {SelectField} from "../../components/SelectField";
 import Toast from "react-bootstrap/Toast";
+import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
+import Loader from 'react-loader-spinner'
+import {faListAlt} from "@fortawesome/free-solid-svg-icons";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 
 class ListViewPage extends React.PureComponent {
     constructor(props) {
@@ -148,8 +152,19 @@ class ListViewPage extends React.PureComponent {
 
                 <div className="container-fluid">
                     <div className="row">
-                        <div className="col-sm-4 event-list">
-                            {loading && <div>Loading events....</div>}
+                        <div className="col-sm-4 col-md-3 event-list">
+                            { loading && <div className={"d-flex align-items-center h-100 justify-content-center"}>
+                                <Loader
+                                    type="Triangle"
+                                    color="#00BFFF"
+                                    height={100}
+                                    width={100}
+                                />
+                            </div>}
+
+                            {!loading && (!events || events.length === 0) &&
+                            <div>There are no events matching the search criteria</div>}
+
                             {!loading &&
                             events &&
                             events.map((item, index) => {
@@ -166,15 +181,15 @@ class ListViewPage extends React.PureComponent {
                         </div>
                         <div className="col-sm-8 event-details">
                             {!item && (
-                                <div>
-                                    Please select an event on the left panel to see more
-                                    information
+                                <div className={"d-flex flex-column justify-content-center align-items-center h-100"}>
+                                    <div className={"list-icon"}><FontAwesomeIcon icon={faListAlt}/></div>
+                                    <div>Please select an event from the list to see more information about it</div>
                                 </div>
                             )}
 
                             {item && !this.editing && (
                                 <>
-                                    <div className={"form-row"}>
+                                    <div className={"form-row padding-top-4rem"}>
                                         <div className={"col-12 col-md-6"}>
                                             {(isOwner || user.admin) && (
                                                 <div className={"options " + (false ? "d-none" : "")}>
