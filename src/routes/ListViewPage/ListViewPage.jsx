@@ -271,13 +271,9 @@ class ListViewPage extends React.PureComponent {
                       return errors;
                     }}
                     onSubmit={(values, { setSubmitting }) => {
-                      console.log("submit");
                       updateEvent(values);
                       this.toggleToast();
                       setSubmitting(false);
-                      setTimeout(() => {
-                        // window.location.reload();
-                      }, 2000);
                     }}
                   >
                     {({

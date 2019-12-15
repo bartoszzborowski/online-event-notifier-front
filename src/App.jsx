@@ -9,7 +9,7 @@ import { AdminEventsPage } from "./routes/AdminEventsPage";
 import { AdminUsersPage } from "./routes/AdminUsersPage";
 import { AdminUserPage } from "./routes/AdminUserPage/AdminUserPage";
 import { PrivateRoute } from "./components/PrivateRoute";
-import HomePage from "./routes/HomePage/HomePage";
+import { HomePage } from "./routes/HomePage/HomePage";
 
 class App extends React.Component {
   constructor(props) {

@@ -38,7 +38,7 @@ const ModalAddEvent = props => {
         <FontAwesomeIcon icon={faCalendarPlus} />
       </button>
 
-      <Modal show={show} onHide={handleClose}>
+      <Modal show={show} size="lg" onHide={handleClose}>
         <Formik
           initialValues={{
             name: "",
@@ -79,7 +79,12 @@ const ModalAddEvent = props => {
           }}
           onSubmit={(values, { setSubmitting }) => {
             addEvent(values);
-            handleClose();
+            setTimeout(() => {
+              if (error === undefined) {
+                handleClose();
+              }
+              setSubmitting(false);
+            }, 1500);
             setSubmitting(false);
           }}
         >
@@ -117,7 +122,7 @@ const ModalAddEvent = props => {
                     timeFormat="HH:mm"
                     timeIntervals={15}
                     timeCaption="time"
-                    dateFormat="MMMM d, yyyy h:mm aa"
+                    dateFormat="MM d, yyyy h:mm aa"
                     className={
                       "form-control " + (errors.event_date ? "is-invalid" : "")
                     }
@@ -276,9 +281,7 @@ const ModalAddEvent = props => {
                 >
                   Add
                 </button>
-                <div className={"text-danger mt-auto"}>
-                  {error && error.message}
-                </div>
+                <div className={"text-danger mt-auto"}>{error && error}</div>
                 <div className={"text-success mt-auto"}>
                   {event && "Create new event successful"}
                 </div>
