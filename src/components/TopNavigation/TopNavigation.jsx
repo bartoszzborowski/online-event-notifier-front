@@ -196,12 +196,21 @@ class TopNavigation extends React.Component {
                   <div className={"col-12 text-right"}>
                     <button
                       type="button"
-                      className={"btn btn-primary"}
+                      className={"btn btn-secondary mr-2"}
                       onClick={() => {
                         resetForm({});
                       }}
                     >
                       Reset filters
+                    </button>
+                    <button
+                        type="submit"
+                        className={"btn btn-primary"}
+                        onClick={() => {
+                          handleSubmit();
+                        }}
+                    >
+                      Submit
                     </button>
                   </div>
                 </div>
