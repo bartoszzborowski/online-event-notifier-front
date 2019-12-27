@@ -96,6 +96,7 @@ class AdminUsersPage extends React.Component {
                                                 <button
                                                     type={"submit"}
                                                     className={"btn btn-primary btn-sm"}
+                                                    disabled={loading}
                                                 >
                                                     <FontAwesomeIcon icon={faSearch} className={"mr-1"}/>
                                                     Search

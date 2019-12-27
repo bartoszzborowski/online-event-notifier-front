@@ -4,8 +4,17 @@ import { TopNavigation } from "../../components/TopNavigation";
 import { NotificationArea } from "../../components/NotificationArea";
 import { eventActions } from "../../stores/actions";
 import { connect } from "react-redux";
+import Loader from "react-loader-spinner";
 
 class HomePage extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      // @TODO probably to be replaced by something else
+      loading: true
+    }
+  }
+
   componentDidMount() {
     const { getByUser } = this.props;
     if (getByUser) {
@@ -19,8 +28,15 @@ class HomePage extends React.Component {
     return (
       <div className="vh-100">
         <TopNavigation />
-        <MapContainer events={events} />
-        <NotificationArea events={events} />
+        { this.state.loading && <div className={"d-flex align-items-center h-100 justify-content-center"}>
+          <Loader
+              type="Triangle"
+              color="#00BFFF"
+              height={100}
+              width={100}
+          />
+        </div>}
+        {!this.state.loading && <MapContainer events={events} />}
       </div>
     );
   }
