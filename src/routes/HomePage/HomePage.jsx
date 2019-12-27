@@ -4,6 +4,7 @@ import {TopNavigation} from "../../components/TopNavigation";
 import {eventActions} from "../../stores/actions";
 import {connect} from "react-redux";
 import Loader from "react-loader-spinner";
+import {NotificationArea} from "../../components/NotificationArea/NotificationArea";
 
 class HomePage extends React.Component {
   componentDidMount() {
@@ -19,6 +20,7 @@ class HomePage extends React.Component {
     return (
         <div className="vh-100">
           <TopNavigation/>
+          <NotificationArea/>
           {loading && <div className={"d-flex align-items-center h-100 justify-content-center"}>
             <Loader
                 type="Triangle"

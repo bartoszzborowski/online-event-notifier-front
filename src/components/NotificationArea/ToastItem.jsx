@@ -23,8 +23,8 @@ export class ToastItem extends React.Component {
     const { id, event_date, name, description } = event;
     const eventLink = `./listView/${id}`;
     return (
-      <div style={{ position: "absolute", top: "20px", right: "40vw" }}>
-        <Toast onClose={() => this.toggleToast()} show={showToast} delay={3000}>
+      <div>
+        <Toast onClose={() => this.toggleToast()} show={showToast} className={"mb-2"}>
           <Toast.Header>
             <strong className="mr-auto">{name}</strong>
             <small>{event_date}</small>
