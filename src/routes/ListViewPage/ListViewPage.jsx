@@ -114,7 +114,7 @@ class ListViewPage extends React.PureComponent {
       }).length;
     }
     let attendanceCounter = 0;
-
+    let mapInitialCenter = {lat: 52.227889, lng: 21.001778};
     if (item) {
       const {attendance_counter: attendanceCounterItem} = item;
       const {attendanceCounter: attendanceCounterState} = this.state;
@@ -124,7 +124,11 @@ class ListViewPage extends React.PureComponent {
               ? attendanceCounterState[item.id]
               : attendanceCounterItem
               : attendanceCounterItem;
+      mapInitialCenter = item && !this.editing && {
+        lat: item.lat, lng: item.lng
+      };
     }
+
     return (
         <div className="vh-100">
           <Toast
@@ -169,13 +173,11 @@ class ListViewPage extends React.PureComponent {
                 events &&
                 events.map((item, index) => {
                   return (
-                      <>
-                        <EventListItem
-                            item={item}
-                            selected={+eventId === item.id}
-                            key={index}
-                        />
-                      </>
+                      <EventListItem
+                          item={item}
+                          selected={+eventId === item.id}
+                          key={index}
+                      />
                   );
                 })}
               </div>
@@ -245,7 +247,7 @@ class ListViewPage extends React.PureComponent {
                           <div className={"mb-2"}>{item.fee}</div>
                         </div>
                         <div className={"col-12 col-md-6 map-row"}>
-                          <MapContainer events={[item]}/>
+                          <MapContainer initialCenter={mapInitialCenter} events={[item]}/>
                         </div>
                       </div>
                     </>

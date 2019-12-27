@@ -16,7 +16,7 @@ class HomePage extends React.Component {
 
   render() {
     const {events, loading} = this.props;
-
+    const mapInitialCenter = { lat: 52.227889, lng: 21.001778 };
     return (
         <div className="vh-100">
           <TopNavigation/>
@@ -29,7 +29,7 @@ class HomePage extends React.Component {
                 width={100}
             />
           </div>}
-          {!loading && events && <MapContainer events={events}/>}
+          {!loading && events && <MapContainer initialCenter={mapInitialCenter} events={events}/>}
         </div>
     );
   }
