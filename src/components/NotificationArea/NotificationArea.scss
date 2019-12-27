@@ -6,7 +6,7 @@
   top: 10vh;
   right: 1vw;
   min-width: 21.75rem;
-
+  pointer-events: none;
 
   @media (max-width: 576px) {
     width: auto;
@@ -14,4 +14,9 @@
     top: 14vh;
     height: 21.75rem;
   }
+}
+
+.toast {
+  z-index: 1037;
+  pointer-events: all;
 }
