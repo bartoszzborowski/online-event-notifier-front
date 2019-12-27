@@ -12,13 +12,25 @@ export class NotificationArea extends React.Component {
 
   render() {
     const { events } = this.props;
-    const slicedEvents = events && events.slice(0, 4);
+    const currentTime = new Date();
+
+    const slicedEvents =
+      events &&
+      events
+        .filter(event => {
+          if (new Date(event.event_date) > currentTime) {
+            return event;
+          }
+        })
+        .slice(0, 4)
+        .reverse();
+    console.log("slicedEvents", slicedEvents);
+    // const slicedEvents = events && events.slice(0, 4);
     const notificationAreaItems = [];
     events &&
       slicedEvents.map(event => {
         return notificationAreaItems.push(<ToastItem event={event} />);
       });
-    console.log("notificationAreaItems", notificationAreaItems);
     return (
       <div
         aria-live="polite"

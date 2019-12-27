@@ -10,7 +10,7 @@ function getLocations() {
   return dispatch => {
     dispatch(request());
 
-    uiService.getLocations().then(
+    return uiService.getLocations().then(
       items => dispatch(success(items)),
       error => dispatch(failure(error))
     );

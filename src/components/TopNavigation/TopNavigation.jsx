@@ -34,7 +34,14 @@ class TopNavigation extends React.Component {
   }
 
   render() {
-    const { user, logout, locations, eventTypes, searchEvent } = this.props;
+    const {
+      user,
+      logout,
+      locations,
+      eventTypes,
+      searchEvent,
+      getLocations
+    } = this.props;
 
     const locationsOptions =
       locations &&
@@ -47,6 +54,14 @@ class TopNavigation extends React.Component {
         return { value: item.name, label: item.name };
       });
 
+    const onSubmit = async (
+      values,
+      { setSubmitting, setErrors, setStatus, resetForm }
+    ) => {
+      getLocations().then(ele => {
+        console.log("ele", ele);
+      });
+    };
     return (
       <>
         <Formik
@@ -57,14 +72,7 @@ class TopNavigation extends React.Component {
             event_type: "",
             entry_fee: ""
           }}
-          onSubmit={(values, { setSubmitting }) => {
-            this.setState({ filtersOpened: false });
-            searchEvent(values);
-            setSubmitting(false);
-            setTimeout(() => {
-              history.push("/listView");
-            }, 400);
-          }}
+          onSubmit={onSubmit}
         >
           {({ values, setFieldValue, handleSubmit, resetForm }) => (
             <form onSubmit={handleSubmit}>
@@ -105,10 +113,11 @@ class TopNavigation extends React.Component {
               <div className="navigation-group top-right">
                 {user && (
                   <div className="btn-group">
-                    {user.admin &&
-                    <Link to="../admin" className="btn btn-secondary">
-                      <FontAwesomeIcon icon={faCrown} />
-                    </Link>}
+                    {user.admin && (
+                      <Link to="../admin" className="btn btn-secondary">
+                        <FontAwesomeIcon icon={faCrown} />
+                      </Link>
+                    )}
                     <ModalAddEvent
                       locations={locations}
                       eventTypes={eventTypes}

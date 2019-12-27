@@ -69,7 +69,7 @@ function attendToEvent(user_id, event_id) {
 function addEvent(event) {
   return dispatch => {
     dispatch(request());
-    eventService.create(event).then(
+    return eventService.create(event).then(
       event => {
         dispatch(success(event));
       },
