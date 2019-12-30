@@ -15,6 +15,7 @@ export const eventService = {
 function search(parameters) {
   const QUERY = gql`
     query(
+      $id: String
       $name: String
       $date: String
       $city_id: EnumCityTypesType
@@ -22,6 +23,7 @@ function search(parameters) {
       $entry_fee: Float
     ) {
       searchEvents(
+        id: $id
         name: $name
         date: $date
         city_id: $city_id
@@ -38,6 +40,8 @@ function search(parameters) {
         fee
         event_date
         attendance_counter
+        lat
+        lng
       }
     }
   `;
@@ -114,7 +118,7 @@ function create(event) {
     description,
     entryFee,
     latitude,
-    longitude,
+    longitude
   } = event;
   const enhanceEvent = {
     address: address,
@@ -124,8 +128,8 @@ function create(event) {
     event_type: type,
     fee: entryFee,
     name,
-    lat:latitude,
-    lng:longitude,
+    lat: latitude,
+    lng: longitude
   };
 
   const MUTATION = gql`
@@ -220,7 +224,7 @@ function update(event) {
     description,
     entryFee,
     latitude,
-    longitude,
+    longitude
   } = event;
   const enhanceEvent = {
     id,
@@ -231,8 +235,8 @@ function update(event) {
     event_type: type,
     fee: entryFee,
     name,
-    lat:latitude,
-    lng:longitude,
+    lat: latitude,
+    lng: longitude
   };
 
   const MUTATION = gql`

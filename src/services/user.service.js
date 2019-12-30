@@ -21,7 +21,8 @@ function getByToken() {
         id
         email
         admin
-        token
+        name
+        surname
         events {
           id
           event_type
@@ -43,8 +44,8 @@ function getByToken() {
       const {
         data: { userByToken = {} }
       } = result;
-      console.log("result", result);
-      if (userByToken.length > 1) {
+
+      if (Object.keys(userByToken).length > 0) {
         localStorage.removeItem("user");
         localStorage.setItem("user", JSON.stringify(userByToken));
       }
@@ -86,6 +87,7 @@ function login(username, password) {
         data: { login = {} }
       } = result;
       // store user details and jwt token in local storage to keep user logged in between page refreshes
+      localStorage.setItem("token", login.token);
       localStorage.setItem("user", JSON.stringify(login));
       return login;
     });
@@ -211,9 +213,21 @@ function update(users) {
       updateUser(input: $input) {
         id
         email
+        token
+        admin
         name
         surname
-        admin
+        events {
+          id
+          event_type
+          user_id
+          address
+          name
+          description
+          fee
+          event_date
+          attendance_counter
+        }
       }
     }
   `;
@@ -222,10 +236,9 @@ function update(users) {
     .mutate({ mutation: MUTATION, variables: { input: { ...enhanceUser } } })
     .then(result => {
       const {
-        data: { users = {} }
+        data: { updateUser = {} }
       } = result;
-      console.log("result", result);
-      return users;
+      return updateUser;
     });
 }
 

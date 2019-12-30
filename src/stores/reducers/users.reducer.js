@@ -13,6 +13,7 @@ export function users(
   switch (action.type) {
     case userConstants.GET_BY_ID_REQUEST:
     case userConstants.GETALL_REQUEST:
+    case userConstants.UPDATE_REQUEST:
       return {
         ...state,
         loading: true,
@@ -32,6 +33,14 @@ export function users(
         success: true,
         user: action.user
       };
+    case userConstants.UPDATE_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        success: true,
+        user: action.user
+      };
+    case userConstants.UPDATE_FAILURE:
     case userConstants.GET_BY_ID_FAILURE:
     case userConstants.GETALL_FAILURE:
       return {

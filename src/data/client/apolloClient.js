@@ -16,7 +16,7 @@ const defaultOptions = {
 };
 
 const link = new HttpLink({
-  uri: "http://127.0.0.1:8020/graphql"
+  uri: "http://51.83.253.8:8020/graphql"
 });
 
 const config = {
@@ -28,7 +28,7 @@ const config = {
 export const client = new ApolloClient(config);
 export const getClient = token => {
   const authLink = setContext((_, { headers }) => {
-    const authTokenFromCookie = JSON.parse(localStorage.getItem("user")).token;
+    const authTokenFromCookie = localStorage.getItem("token");
     const authToken = token || authTokenFromCookie || "";
     return {
       headers: {

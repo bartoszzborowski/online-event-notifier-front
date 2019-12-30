@@ -58,8 +58,12 @@ class TopNavigation extends React.Component {
       values,
       { setSubmitting, setErrors, setStatus, resetForm }
     ) => {
-      getLocations().then(ele => {
-        console.log("ele", ele);
+      this.setState({ filtersOpened: false });
+      searchEvent(values).then(items => {
+        setSubmitting(false);
+        setTimeout(() => {
+          history.push("/listView");
+        }, 400);
       });
     };
     return (
@@ -213,11 +217,11 @@ class TopNavigation extends React.Component {
                       Reset filters
                     </button>
                     <button
-                        type="submit"
-                        className={"btn btn-primary"}
-                        onClick={() => {
-                          handleSubmit();
-                        }}
+                      type="submit"
+                      className={"btn btn-primary"}
+                      onClick={() => {
+                        handleSubmit();
+                      }}
                     >
                       Submit
                     </button>

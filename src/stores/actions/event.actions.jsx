@@ -16,7 +16,7 @@ function searchEvent(search_params) {
   return dispatch => {
     dispatch(request());
 
-    eventService.search(search_params).then(
+    return eventService.search(search_params).then(
       events => {
         dispatch(success(events));
       },
@@ -95,12 +95,11 @@ function addEvent(event) {
 function updateEvent(event) {
   return dispatch => {
     dispatch(request(event));
-    eventService.update(event).then(
+    return eventService.update(event).then(
       event => {
         dispatch(success(event));
       },
       error => {
-        console.log("error", error);
         dispatch(failure(error.toString()));
       }
     );
@@ -163,10 +162,9 @@ function deleteEvent(id) {
   return dispatch => {
     dispatch(request(id));
 
-    eventService.delete(id).then(
+    return eventService.delete(id).then(
       event => {
         dispatch(success(id));
-        history.push("/listView");
       },
       error => dispatch(failure(id, error.toString()))
     );

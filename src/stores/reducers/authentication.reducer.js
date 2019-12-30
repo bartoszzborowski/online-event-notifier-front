@@ -19,7 +19,7 @@ export function authentication(state = initialState, action) {
         ...state,
         loggedIn: true,
         user: action.user,
-        userEvents: action.user.events && action.user.events
+        userEvents: action.user && action.user.events && action.user.events
       };
     case userConstants.UPDATE_FAILURE:
     case userConstants.LOGIN_FAILURE:

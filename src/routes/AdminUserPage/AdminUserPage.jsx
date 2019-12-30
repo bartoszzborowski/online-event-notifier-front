@@ -33,7 +33,6 @@ class AdminUserPage extends React.Component {
 
   render() {
     const { user, loading } = this.props;
-    console.log("user", user);
     return (
       <>
         <TopNavigation />
@@ -143,7 +142,6 @@ class AdminUserPage extends React.Component {
                                 value={values.admin}
                                 id={"admin"}
                                 onChange={event => {
-                                  console.log("evenrt", event.target.value);
                                   setFieldValue("admin", event.target.value);
                                 }}
                               >

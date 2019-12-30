@@ -167,7 +167,7 @@ function getAllUsersAction() {
   return dispatch => {
     dispatch(request());
 
-    userService.getAllUsers().then(
+    return userService.getAllUsers().then(
       users => dispatch(success(users)),
       error => dispatch(failure(error))
     );
@@ -205,12 +205,12 @@ function getUserAction($userId) {
   }
 }
 
-function updateUser(users) {
+function updateUser(user) {
   return dispatch => {
-    dispatch(request(users));
-    userService.update(users).then(
-      users => {
-        dispatch(success(users));
+    dispatch(request(user));
+    return userService.update(user).then(
+      user => {
+        dispatch(success(user));
       },
       error => {
         dispatch(failure(error.toString()));
@@ -219,12 +219,12 @@ function updateUser(users) {
   };
 
   function request() {
-    return { type: userConstants.GETALL_REQUEST };
+    return { type: userConstants.UPDATE_REQUEST };
   }
-  function success(users) {
-    return { type: userConstants.GETALL_SUCCESS, users };
+  function success(user) {
+    return { type: userConstants.UPDATE_SUCCESS, user };
   }
   function failure(error) {
-    return { type: userConstants.GETALL_FAILURE, error };
+    return { type: userConstants.UPDATE_FAILURE, error };
   }
 }

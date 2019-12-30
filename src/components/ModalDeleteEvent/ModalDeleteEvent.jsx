@@ -30,8 +30,10 @@ const ModalDeleteEvent = props => {
         <Formik
           initialValues={{}}
           onSubmit={(values, { setSubmitting }) => {
-            deleteEvent(props.event.id);
-            setSubmitting(false);
+            deleteEvent(props.event.id).then(id => {
+              handleClose();
+              setSubmitting(false);
+            });
           }}
         >
           {({ handleSubmit, isSubmitting }) => (

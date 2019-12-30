@@ -1,8 +1,8 @@
 import React from "react";
 import "./NotificationArea.scss";
-import {ToastItem} from "./ToastItem";
-import {eventActions} from "../../stores/actions";
-import {connect} from "react-redux";
+import { ToastItem } from "./ToastItem";
+import { eventActions } from "../../stores/actions";
+import { connect } from "react-redux";
 
 class NotificationArea extends React.Component {
   constructor(props) {
@@ -13,30 +13,34 @@ class NotificationArea extends React.Component {
   }
 
   render() {
-    const {loading, events} = this.props;
+    const { loading, events } = this.props;
     const currentTime = new Date();
-    const notificationItems = !loading && events &&
-        events
-            .filter(event => new Date(event.event_date) > currentTime)
-            .slice(0, 4)
-            .reverse();
-    console.log(loading, events, notificationItems);
-
+    const notificationItems =
+      !loading &&
+      events &&
+      events
+        .filter(event => new Date(event.event_date) > currentTime)
+        .slice(0, 4)
+        .reverse();
     return (
-        <div aria-live="polite" aria-atomic="true" className={"notification-area"}>
-          {!loading && events && notificationItems.map((item, index) => {
-            return (
-                <ToastItem event={item} key={index}/>
-            );
+      <div
+        aria-live="polite"
+        aria-atomic="true"
+        className={"notification-area"}
+      >
+        {!loading &&
+          events &&
+          notificationItems.map((item, index) => {
+            return <ToastItem event={item} key={index} />;
           })}
-        </div>
+      </div>
     );
   }
 }
 
 const mapStateToProps = state => {
-  const {events, loading} = state.events;
-  return {events, loading};
+  const { events, loading } = state.events;
+  return { events, loading };
 };
 
 const actionCreators = {
@@ -44,7 +48,7 @@ const actionCreators = {
 };
 
 const connectedNotificationArea = connect(
-    mapStateToProps,
-    actionCreators
+  mapStateToProps,
+  actionCreators
 )(NotificationArea);
-export {connectedNotificationArea as NotificationArea};
+export { connectedNotificationArea as NotificationArea };
