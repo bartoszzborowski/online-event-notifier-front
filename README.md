@@ -1,6 +1,6 @@
 ## Project host
 
-[OnlineNotifier](167.71.58.147)
+[OnlineNotifier](http://167.71.58.147)
 
 ### Admin user
 
